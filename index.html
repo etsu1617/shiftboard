@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShiftBoard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ============================================
+     認証画面
+     ============================================ -->
+<div id="auth-screen" style="display:flex">
+  <div class="auth-card">
+    <h1>📅 ShiftBoard</h1>
+
+    <!-- ログインフォーム -->
+    <div class="form-group">
+      <label>メールアドレス</label>
+      <input type="email" id="login-email" placeholder="example@mail.com" />
+    </div>
+    <div class="form-group">
+      <label>パスワード</label>
+      <input type="password" id="login-pass" placeholder="パスワード" />
+    </div>
+    <button class="btn btn-primary" onclick="login()">ログイン</button>
+
+    <div class="auth-toggle">
+      アカウントがない方は <a onclick="toggleRegister()">新規登録</a>
+    </div>
+
+    <!-- 新規登録フォーム（初期非表示） -->
+    <div id="register-form" style="display:none">
+      <div class="divider"></div>
+      <div class="form-group">
+        <label>名前</label>
+        <input type="text" id="reg-name" placeholder="山田 太郎" />
+      </div>
+      <div class="form-group">
+        <label>メールアドレス</label>
+        <input type="email" id="reg-email" placeholder="example@mail.com" />
+      </div>
+      <div class="form-group">
+        <label>パスワード（6文字以上）</label>
+        <input type="password" id="reg-pass" placeholder="パスワード" />
+      </div>
+      <div class="form-group">
+        <label>役割</label>
+        <select id="reg-role">
+          <option value="employee">スタッフ</option>
+          <option value="host">管理者（ホスト）</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" onclick="register()">登録する</button>
+    </div>
+
+    <p id="auth-error" class="error-msg"></p>
+  </div>
+</div>
+
+
+<!-- ============================================
+     アプリ画面
+     ============================================ -->
+<div id="app-screen" style="display:none; flex-direction:column; min-height:100vh">
+
+  <!-- ヘッダー -->
+  <header class="app-header">
+    <div class="logo">📅 ShiftBoard</div>
+    <div class="header-user">
+      <span id="user-name"></span>
+      <span id="user-role" class="role-tag"></span>
+      <!-- ホストのみ：メンバー管理ボタン -->
+      <button class="btn btn-sm host-only" onclick="openMemberModal()">👥 メンバー</button>
+      <button class="btn btn-ghost" onclick="logout()">ログアウト</button>
+    </div>
+  </header>
+
+  <!-- メインタブ -->
+  <nav class="main-tabs">
+    <button class="main-tab-btn" data-tab="shift"   onclick="switchTab('shift')">📅 シフト表</button>
+    <button class="main-tab-btn" data-tab="request" onclick="switchTab('request')">📝 休み管理</button>
+    <button class="main-tab-btn host-only" data-tab="settings" onclick="switchTab('settings')">⚙️ 設定</button>
+  </nav>
+
+  <!-- ========== シフト表タブ ========== -->
+  <div id="tab-shift" class="tab-content" style="display:none">
+    <div class="cal-nav">
+      <button class="btn btn-sm" onclick="prevMonth()">◀ 前月</button>
+      <h2 id="cal-title"></h2>
+      <button class="btn btn-sm" onclick="nextMonth()">次月 ▶</button>
+    </div>
+
+    <!-- 凡例 -->
+    <div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap">
+      <span class="shift-badge on" style="border-radius:12px">出勤</span>
+      <span class="shift-badge off" style="border-radius:12px">休み（承認済）</span>
+      <span class="shift-badge pending" style="border-radius:12px">申請中</span>
+    </div>
+
+    <div class="cal-grid" id="cal-grid"></div>
+
+    <!-- ホスト用：シフト一括設定ボタン -->
+    <div class="host-only" style="margin-top:16px">
+      <button class="btn btn-outline" onclick="openShiftModal()">✏️ シフトを設定する</button>
+    </div>
+  </div>
+
+
+  <!-- ========== 休み管理タブ ========== -->
+  <div id="tab-request" class="tab-content" style="display:none">
+
+    <!-- サブタブ -->
+    <div class="sub-tabs">
+      <button class="sub-tab-btn" data-sub="apply"   onclick="switchSubTab('apply')">申請する</button>
+      <button class="sub-tab-btn" data-sub="history" onclick="switchSubTab('history')">申請履歴</button>
+      <button class="sub-tab-btn host-only" data-sub="manage" onclick="switchSubTab('manage')">承認管理</button>
+    </div>
+
+    <!-- 申請するサブ -->
+    <div id="sub-apply" class="sub-content" style="display:none">
+      <div class="my-shift-box">
+        📋 私のシフト：<span id="my-shift-display">読み込み中...</span>
+      </div>
+
+      <div class="form-group">
+        <label>休み開始日</label>
+        <input type="date" id="req-start" />
+      </div>
+      <div class="form-group">
+        <label>休み終了日</label>
+        <input type="date" id="req-end" />
+      </div>
+      <div class="form-group">
+        <label>理由（任意）</label>
+        <textarea id="req-reason" rows="3" placeholder="私用、体調不良など"></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="submitRequest()">申請する</button>
+    </div>
+
+    <!-- 申請履歴サブ -->
+    <div id="sub-history" class="sub-content" style="display:none">
+      <div id="history-list"></div>
+    </div>
+
+    <!-- 承認管理サブ（ホストのみ） -->
+    <div id="sub-manage" class="sub-content host-only" style="display:none">
+      <div id="manage-list"></div>
+    </div>
+
+  </div>
+
+
+  <!-- ========== 設定タブ（ホストのみ） ========== -->
+  <div id="tab-settings" class="tab-content host-only" style="display:none">
+
+    <div class="settings-section">
+      <h3>📧 メール通知設定</h3>
+
+      <!-- メール種別タブ -->
+      <div class="email-tabs">
+        <button class="email-tab-btn active" onclick="switchEmailTab('request')">申請受付（ホスト宛）</button>
+        <button class="email-tab-btn" onclick="switchEmailTab('approval')">承認時（申請者宛）</button>
+        <button class="email-tab-btn" onclick="switchEmailTab('rejection')">却下時（申請者宛）</button>
+      </div>
+
+      <!-- 申請受付 -->
+      <div id="email-panel-request" class="email-settings-panel active">
+        <div class="form-group">
+          <label>件名</label>
+          <input type="text" id="request-subject" />
+        </div>
+        <div class="form-group">
+          <label>冒頭あいさつ（{名前} タグ使用可）</label>
+          <input type="text" id="request-greeting" />
+        </div>
+        <p class="section-title" style="margin-top:12px">送る項目</p>
+        <div class="field-toggles">
+          <label class="toggle-row"><input type="checkbox" id="request-field-applicant_name" /> 申請者名</label>
+          <label class="toggle-row"><input type="checkbox" id="request-field-period" /> 期間</label>
+          <label class="toggle-row"><input type="checkbox" id="request-field-reason" /> 理由</label>
+          <label class="toggle-row"><input type="checkbox" id="request-field-shift_info" /> シフト情報</label>
+          <label class="toggle-row"><input type="checkbox" id="request-field-reviewer_name" disabled /> 承認者名</label>
+          <label class="toggle-row"><input type="checkbox" id="request-field-reviewed_at" disabled /> 承認日時</label>
+        </div>
+        <div class="form-group">
+          <label>末尾の締め文</label>
+          <textarea id="request-footer" rows="2"></textarea>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="previewEmail('request')">👁 プレビュー</button>
+      </div>
+
+      <!-- 承認時 -->
+      <div id="email-panel-approval" class="email-settings-panel">
+        <div class="form-group">
+          <label>件名</label>
+          <input type="text" id="approval-subject" />
+        </div>
+        <div class="form-group">
+          <label>冒頭あいさつ（{名前} タグ使用可）</label>
+          <input type="text" id="approval-greeting" />
+        </div>
+        <p class="section-title" style="margin-top:12px">送る項目</p>
+        <div class="field-toggles">
+          <label class="toggle-row"><input type="checkbox" id="approval-field-applicant_name" /> 申請者名</label>
+          <label class="toggle-row"><input type="checkbox" id="approval-field-period" /> 期間</label>
+          <label class="toggle-row"><input type="checkbox" id="approval-field-reason" /> 理由</label>
+          <label class="toggle-row"><input type="checkbox" id="approval-field-shift_info" /> シフト情報</label>
+          <label class="toggle-row"><input type="checkbox" id="approval-field-reviewer_name" /> 承認者名</label>
+          <label class="toggle-row"><input type="checkbox" id="approval-field-reviewed_at" /> 承認日時</label>
+        </div>
+        <div class="form-group">
+          <label>末尾の締め文</label>
+          <textarea id="approval-footer" rows="2"></textarea>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="previewEmail('approval')">👁 プレビュー</button>
+      </div>
+
+      <!-- 却下時 -->
+      <div id="email-panel-rejection" class="email-settings-panel">
+        <div class="form-group">
+          <label>件名</label>
+          <input type="text" id="rejection-subject" />
+        </div>
+        <div class="form-group">
+          <label>冒頭あいさつ（{名前} タグ使用可）</label>
+          <input type="text" id="rejection-greeting" />
+        </div>
+        <p class="section-title" style="margin-top:12px">送る項目</p>
+        <div class="field-toggles">
+          <label class="toggle-row"><input type="checkbox" id="rejection-field-applicant_name" /> 申請者名</label>
+          <label class="toggle-row"><input type="checkbox" id="rejection-field-period" /> 期間</label>
+          <label class="toggle-row"><input type="checkbox" id="rejection-field-reason" /> 理由</label>
+          <label class="toggle-row"><input type="checkbox" id="rejection-field-shift_info" /> シフト情報</label>
+          <label class="toggle-row"><input type="checkbox" id="rejection-field-reviewer_name" /> 承認者名</label>
+          <label class="toggle-row"><input type="checkbox" id="rejection-field-reviewed_at" /> 承認日時</label>
+        </div>
+        <div class="form-group">
+          <label>末尾の締め文</label>
+          <textarea id="rejection-footer" rows="2"></textarea>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="previewEmail('rejection')">👁 プレビュー</button>
+      </div>
+
+      <div style="margin-top:16px">
+        <button class="btn btn-primary" onclick="saveEmailSettings()">💾 設定を保存</button>
+      </div>
+    </div>
+
+  </div><!-- /tab-settings -->
+
+</div><!-- /app-screen -->
+
+
+<!-- ============================================
+     モーダル：シフト設定（ホスト用）
+     ============================================ -->
+<div id="shift-modal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>✏️ シフト設定</h3>
+      <button class="modal-close" onclick="closeShiftModal()">✕</button>
+    </div>
+
+    <div class="form-group">
+      <label>メンバーを選択</label>
+      <select id="shift-member-select" onchange="onShiftMemberChange()"></select>
+    </div>
+
+    <p class="section-title">曜日ごとのシフト</p>
+
+    <!-- 日〜土の設定行 -->
+    <div id="shift-days-form">
+      <div class="shift-day-row">
+        <input type="checkbox" id="shift-day-0-enabled" onchange="updateShiftInputState('0')" />
+        <label>日</label>
+        <input type="time" id="shift-day-0-start" value="09:00" disabled />
+        <span>〜</span>
+        <input type="time" id="shift-day-0-end" value="17:00" disabled />
+      </div>
+      <div class="shift-day-row">
+        <input type="checkbox" id="shift-day-1-enabled" onchange="updateShiftInputState('1')" />
+        <label>月</label>
+        <input type="time" id="shift-day-1-start" value="09:00" disabled />
+        <span>〜</span>
+        <input type="time" id="shift-day-1-end" value="17:00" disabled />
+      </div>
+      <div class="shift-day-row">
+        <input type="checkbox" id="shift-day-2-enabled" onchange="updateShiftInputState('2')" />
+        <label>火</label>
+        <input type="time" id="shift-day-2-start" value="09:00" disabled />
+        <span>〜</span>
+        <input type="time" id="shift-day-2-end" value="17:00" disabled />
+      </div>
+      <div class="shift-day-row">
+        <input type="checkbox" id="shift-day-3-enabled" onchange="updateShiftInputState('3')" />
+        <label>水</label>
+        <input type="time" id="shift-day-3-start" value="09:00" disabled />
+        <span>〜</span>
+        <input type="time" id="shift-day-3-end" value="17:00" disabled />
+      </div>
+      <div class="shift-day-row">
+        <input type="checkbox" id="shift-day-4-enabled" onchange="updateShiftInputState('4')" />
+        <label>木</label>
+        <input type="time" id="shift-day-4-start" value="09:00" disabled />
+        <span>〜</span>
+        <input type="time" id="shift-day-4-end" value="17:00" disabled />
+      </div>
+      <div class="shift-day-row">
+        <input type="checkbox" id="shift-day-5-enabled" onchange="updateShiftInputState('5')" />
+        <label>金</label>
+        <input type="time" id="shift-day-5-start" value="09:00" disabled />
+        <span>〜</span>
+        <input type="time" id="shift-day-5-end" value="17:00" disabled />
+      </div>
+      <div class="shift-day-row">
+        <input type="checkbox" id="shift-day-6-enabled" onchange="updateShiftInputState('6')" />
+        <label>土</label>
+        <input type="time" id="shift-day-6-start" value="09:00" disabled />
+        <span>〜</span>
+        <input type="time" id="shift-day-6-end" value="17:00" disabled />
+      </div>
+    </div>
+
+    <div style="margin-top:20px; display:flex; gap:10px">
+      <button class="btn btn-primary" onclick="saveShift()">💾 保存</button>
+      <button class="btn btn-sm" onclick="closeShiftModal()">キャンセル</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================
+     モーダル：メンバー管理（ホスト用）
+     ============================================ -->
+<div id="member-modal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>👥 メンバー管理</h3>
+      <button class="modal-close" onclick="closeMemberModal()">✕</button>
+    </div>
+    <div id="member-list"></div>
+  </div>
+</div>
+
+
+<!-- ============================================
+     モーダル：メールプレビュー
+     ============================================ -->
+<div id="email-preview-modal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>📧 メールプレビュー</h3>
+      <button class="modal-close" onclick="closePreviewModal()">✕</button>
+    </div>
+    <div class="preview-box">
+      <div class="preview-subject">件名: <span id="preview-subject"></span></div>
+      <div class="preview-body" id="preview-body"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================
+     トースト通知
+     ============================================ -->
+<div id="toast" class="toast"></div>
+
+
+<!-- ============================================
+     スクリプト読み込み
+     ============================================ -->
+<!-- Supabase クライアント -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- 設定ファイル（あなたの環境に合わせて変更） -->
+<script src="config.js"></script>
+<!-- アプリ本体 -->
+<script src="app.js"></script>
+
+<!-- メール種別タブの切り替え（設定画面内） -->
+<script>
+function switchEmailTab(type) {
+  document.querySelectorAll('.email-tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.email-settings-panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById(`email-panel-${type}`).classList.add('active');
+}
+</script>
+
+</body>
+</html>

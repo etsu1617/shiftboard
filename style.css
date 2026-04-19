@@ -1,0 +1,622 @@
+/* ============================================
+   style.css - ShiftBoard スタイル
+   スマホ対応・見やすいUI
+   ============================================ */
+
+:root {
+  --primary:   #4F7CFF;
+  --primary-d: #3563E9;
+  --success:   #22C55E;
+  --danger:    #EF4444;
+  --warning:   #F59E0B;
+  --bg:        #F4F6FB;
+  --card:      #FFFFFF;
+  --border:    #E2E8F0;
+  --text:      #1E293B;
+  --muted:     #64748B;
+  --radius:    12px;
+  --shadow:    0 2px 12px rgba(0,0,0,.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+}
+
+/* ============================================
+   認証画面
+   ============================================ */
+#auth-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 16px;
+}
+
+.auth-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 32px 24px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-card h1 {
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 24px;
+  color: var(--primary);
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color .2s;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--primary);
+}
+
+.auth-toggle {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.auth-toggle a {
+  color: var(--primary);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.error-msg {
+  font-size: 12px;
+  color: var(--danger);
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* ============================================
+   アプリ本体レイアウト
+   ============================================ */
+#app-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ヘッダー */
+.app-header {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.app-header .logo {
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--primary);
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.header-user .role-tag {
+  background: var(--primary);
+  color: white;
+  border-radius: 20px;
+  padding: 2px 8px;
+  font-size: 11px;
+}
+
+/* メインタブ */
+.main-tabs {
+  display: flex;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+
+.main-tab-btn {
+  flex: 1;
+  padding: 12px 8px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--muted);
+  border-bottom: 3px solid transparent;
+  transition: all .2s;
+}
+
+.main-tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-weight: 600;
+}
+
+/* コンテンツエリア */
+.tab-content {
+  padding: 16px;
+  flex: 1;
+}
+
+/* ============================================
+   カレンダー
+   ============================================ */
+.cal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.cal-nav h2 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.cal-header {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  padding: 4px 0;
+}
+
+.cal-header.sun { color: var(--danger); }
+.cal-header.sat { color: var(--primary); }
+
+.cal-cell {
+  background: var(--card);
+  border-radius: 8px;
+  padding: 4px;
+  min-height: 64px;
+  font-size: 11px;
+  position: relative;
+}
+
+.cal-cell.sun .cal-date { color: var(--danger); }
+.cal-cell.sat .cal-date { color: var(--primary); }
+.cal-cell.today { border: 2px solid var(--primary); }
+
+.cal-date {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.shift-badge {
+  display: block;
+  border-radius: 4px;
+  padding: 1px 4px;
+  margin-bottom: 2px;
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shift-badge.on      { background: #DBEAFE; color: #1D4ED8; }
+.shift-badge.off     { background: #FEE2E2; color: #991B1B; }
+.shift-badge.pending { background: #FEF3C7; color: #92400E; }
+
+.cal-edit-btn {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  opacity: 0.5;
+}
+.cal-edit-btn:hover { opacity: 1; }
+
+/* ============================================
+   サブタブ
+   ============================================ */
+.sub-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+}
+
+.sub-tab-btn {
+  padding: 6px 16px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--card);
+  cursor: pointer;
+  font-size: 13px;
+  white-space: nowrap;
+  color: var(--muted);
+  transition: all .2s;
+}
+
+.sub-tab-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+/* ============================================
+   申請カード
+   ============================================ */
+.request-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-bottom: 10px;
+  border-left: 4px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.request-card.status-pending  { border-left-color: var(--warning); }
+.request-card.status-approved { border-left-color: var(--success); }
+.request-card.status-rejected { border-left-color: var(--danger); }
+
+.req-name   { font-weight: 600; margin-bottom: 4px; }
+.req-period { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.req-reason { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+.req-status { display: flex; align-items: center; gap: 8px; }
+.req-date   { font-size: 11px; color: var(--muted); }
+.req-actions { display: flex; gap: 8px; margin-top: 10px; }
+
+.status-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.status-badge.pending  { background: #FEF3C7; color: #92400E; }
+.status-badge.approved { background: #DCFCE7; color: #166534; }
+.status-badge.rejected { background: #FEE2E2; color: #991B1B; }
+
+/* 自分のシフト表示 */
+.my-shift-box {
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 16px;
+  color: #1D4ED8;
+}
+
+/* ============================================
+   ボタン
+   ============================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all .15s;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  width: 100%;
+}
+.btn-primary:hover { background: var(--primary-d); }
+
+.btn-approve {
+  background: var(--success);
+  color: white;
+  flex: 1;
+}
+
+.btn-reject {
+  background: var(--danger);
+  color: white;
+  flex: 1;
+}
+
+.btn-sm {
+  padding: 4px 10px;
+  font-size: 12px;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.btn-outline {
+  background: white;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: white;
+}
+
+.btn-ghost {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 13px;
+  padding: 4px 8px;
+}
+
+/* ============================================
+   モーダル
+   ============================================ */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.4);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.modal-box {
+  background: var(--card);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--muted);
+}
+
+/* シフト曜日設定 */
+.shift-day-row {
+  display: grid;
+  grid-template-columns: 28px 40px 1fr 16px 1fr;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.shift-day-row label {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.shift-day-row input[type="time"] {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 13px;
+  width: 100%;
+}
+
+/* メンバー行 */
+.member-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.member-row span:first-child { flex: 1; font-weight: 500; }
+
+.role-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+.role-badge.host     { background: #EDE9FE; color: #5B21B6; }
+.role-badge.employee { background: #E0F2FE; color: #0369A1; }
+
+/* ============================================
+   設定画面（メール）
+   ============================================ */
+.settings-section {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+
+.settings-section h3 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.email-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.email-tab-btn {
+  padding: 5px 14px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: white;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.email-tab-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.email-settings-panel { display: none; }
+.email-settings-panel.active { display: block; }
+
+.field-toggles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.toggle-row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+}
+
+/* プレビューモーダル */
+.preview-box {
+  background: #F8FAFC;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  margin-top: 12px;
+}
+
+.preview-subject {
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.preview-body {
+  font-size: 13px;
+  white-space: pre-wrap;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+/* ============================================
+   トースト通知
+   ============================================ */
+.toast {
+  position: fixed;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text);
+  color: white;
+  padding: 10px 24px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: bottom .3s;
+  z-index: 999;
+  white-space: nowrap;
+}
+
+.toast.show { bottom: 24px; }
+.toast.error { background: var(--danger); }
+.toast.success { background: var(--success); }
+
+/* ============================================
+   ユーティリティ
+   ============================================ */
+.empty-msg {
+  text-align: center;
+  color: var(--muted);
+  padding: 32px 0;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 16px 0;
+}
+
+.section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+/* ============================================
+   レスポンシブ（タブレット以上）
+   ============================================ */
+@media (min-width: 640px) {
+  .tab-content { max-width: 720px; margin: 0 auto; }
+  .cal-cell { min-height: 80px; font-size: 12px; }
+  .shift-badge { font-size: 11px; }
+}
