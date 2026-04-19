@@ -1,11 +1,6 @@
-// ============================================
-// config.js - 接続設定
-// ============================================
-// ここにSupabaseの情報を入力してください。
-// Supabaseのダッシュボード → Settings → API から確認できます。
 
 const CONFIG = {
-  SUPABASE_URL: 'https://xxxxxxxxxxxxxxxx.supabase.co',  // ← あなたのURLに変更
-  SUPABASE_ANON_KEY: 'eyJxxxxxxxx...',                    // ← あなたのキーに変更
-  BACKEND_URL: 'https://your-app.onrender.com',           // ← Renderのバックエンドサーバーに変更（メール送信用）
+  SUPABASE_URL: 'https://idydpopwmdzepinocgxy.supabase.co',
+  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlkeWRwb3B3bWR6ZXBpbm9jZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MzMzMzAsImV4cCI6MjA5MjEwOTMzMH0.ymlzcaro-uqRvqdVeLlUlOaK40xKByxwK54w6mSilKI',
+  BACKEND_URL: 'https://shiftboard-oq86.onrender.com',
 };
