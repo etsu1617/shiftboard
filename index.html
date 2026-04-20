@@ -1,394 +1,1092 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ShiftBoard</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShiftBoard</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f5f3;
+    --bg2: #ffffff;
+    --bg3: #f0f0ed;
+    --border: #e0dfd8;
+    --text: #1a1a18;
+    --text2: #6b6b65;
+    --text3: #b0afa8;
+    --accent: #0284c7;
+    --accent2: #0369a1;
+    --danger: #dc2626;
+    --warning: #d97706;
+    --info: #2563eb;
+    --radius: 10px;
+    --font: 'Noto Sans JP', sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; font-size: 14px; line-height: 1.6; }
+
+  /* ===== LOADING ===== */
+  #loading { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; flex-direction: column; gap: 16px; }
+  .spinner { width: 32px; height: 32px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===== AUTH ===== */
+  #auth-page { display: none; min-height: 100vh; align-items: center; justify-content: center; padding: 20px; }
+  .auth-box { width: 100%; max-width: 380px; background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 36px; }
+  .auth-logo { font-family: var(--mono); font-size: 22px; color: var(--accent); letter-spacing: -0.5px; margin-bottom: 8px; }
+  .auth-sub { color: var(--text2); font-size: 13px; margin-bottom: 32px; }
+  .auth-tabs { display: flex; gap: 0; margin-bottom: 28px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .auth-tab { flex: 1; padding: 10px; text-align: center; cursor: pointer; font-size: 13px; color: var(--text2); transition: all 0.2s; border: none; background: transparent; font-family: var(--font); }
+  .auth-tab.active { background: var(--accent); color: #000; font-weight: 700; }
+
+  /* ROLE SELECT */
+  .role-select-wrap { display: flex; gap: 10px; margin-bottom: 22px; }
+  .role-card { flex: 1; border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 10px; text-align: center; cursor: pointer; transition: all 0.18s; background: var(--bg3); }
+  .role-card:hover { border-color: var(--text3); }
+  .role-card.selected-host { border-color: var(--accent); background: rgba(2,132,199,0.07); }
+  .role-card.selected-staff { border-color: var(--info); background: rgba(96,165,250,0.07); }
+  .role-card-icon { font-size: 26px; margin-bottom: 6px; }
+  .role-card-label { font-size: 13px; font-weight: 700; }
+  .role-card-desc { font-size: 11px; color: var(--text2); margin-top: 2px; }
+  label { display: block; font-size: 12px; color: var(--text2); margin-bottom: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
+  input[type=email], input[type=password], input[type=text], input[type=date], input[type=time], select, textarea {
+    width: 100%; padding: 10px 14px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius);
+    color: var(--text); font-family: var(--font); font-size: 14px; outline: none; transition: border 0.2s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+  .form-group { margin-bottom: 18px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 20px; border-radius: var(--radius); font-family: var(--font); font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; text-decoration: none; }
+  .btn-primary { background: var(--accent); color: #000; width: 100%; padding: 12px; font-weight: 700; }
+  .btn-primary:hover { background: var(--accent2); }
+  .btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border); }
+  .btn-ghost:hover { background: var(--bg3); color: var(--text); }
+  .btn-danger { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
+  .btn-danger:hover { background: var(--danger); color: #fff; }
+  .btn-sm { padding: 6px 12px; font-size: 12px; }
+  .error-msg { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3); color: var(--danger); padding: 10px 14px; border-radius: var(--radius); font-size: 13px; margin-bottom: 16px; display: none; }
+  .success-msg { background: rgba(2,132,199,0.1); border: 1px solid rgba(74,222,128,0.3); color: var(--accent); padding: 10px 14px; border-radius: var(--radius); font-size: 13px; margin-bottom: 16px; display: none; }
+
+  /* ===== APP LAYOUT ===== */
+  #app { display: none; min-height: 100vh; flex-direction: column; }
+
+  /* NAV */
+  nav { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0 20px; display: flex; align-items: center; height: 56px; gap: 16px; position: sticky; top: 0; z-index: 100; }
+  .nav-logo { font-family: var(--mono); font-size: 16px; color: var(--accent); font-weight: 500; flex: 1; }
+  .nav-role { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+  .nav-role.host { background: rgba(2,132,199,0.15); color: var(--accent); }
+  .nav-role.staff { background: rgba(96,165,250,0.15); color: var(--info); }
+  .nav-user { font-size: 13px; color: var(--text2); }
+
+  /* TABS */
+  .tabs { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0 20px; display: flex; gap: 0; overflow-x: auto; }
+  .tab-btn { padding: 14px 20px; font-size: 13px; color: var(--text2); cursor: pointer; border: none; background: transparent; font-family: var(--font); border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-btn:hover:not(.active) { color: var(--text); }
+
+  /* CONTENT */
+  .content { flex: 1; padding: 24px 20px; max-width: 900px; margin: 0 auto; width: 100%; }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* CARDS */
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .card-title { font-size: 13px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; font-weight: 500; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .section-title { font-size: 18px; font-weight: 700; }
+
+  /* CALENDAR */
+  .cal-nav { display: flex; align-items: center; gap: 12px; }
+  .cal-nav button { background: var(--bg3); border: 1px solid var(--border); color: var(--text); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+  .cal-nav button:hover { border-color: var(--accent); color: var(--accent); }
+  .cal-month { font-size: 16px; font-weight: 700; min-width: 120px; text-align: center; }
+  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 16px; }
+  .cal-day-label { text-align: center; font-size: 11px; color: var(--text3); padding: 6px 0; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+  .cal-day { min-height: 72px; background: var(--bg3); border-radius: 8px; padding: 6px; border: 1px solid transparent; cursor: pointer; transition: all 0.15s; position: relative; }
+  .cal-day:hover { border-color: var(--border); }
+  .cal-day.today { border-color: var(--accent); }
+  .cal-day.other-month { opacity: 0.3; cursor: default; }
+  .cal-day.selected { border-color: var(--accent); background: rgba(2,132,199,0.08); }
+  .cal-date { font-size: 12px; font-weight: 500; margin-bottom: 4px; }
+  .cal-day.today .cal-date { color: var(--accent); font-weight: 700; }
+  .shift-dot { font-size: 10px; padding: 1px 5px; border-radius: 4px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .shift-dot.open { background: rgba(251,191,36,0.2); color: var(--warning); }
+  .shift-dot.mine { background: rgba(2,132,199,0.2); color: var(--accent); }
+  .shift-dot.filled { background: rgba(96,165,250,0.15); color: var(--info); }
+
+  /* SHIFT LIST */
+  .shift-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; }
+  .shift-item:hover { border-color: var(--border); }
+  .shift-date-badge { background: var(--bg2); border-radius: 8px; padding: 6px 10px; text-align: center; min-width: 52px; }
+  .shift-date-badge .day { font-size: 18px; font-weight: 700; line-height: 1; }
+  .shift-date-badge .weekday { font-size: 10px; color: var(--text2); text-transform: uppercase; }
+  .shift-info { flex: 1; }
+  .shift-time { font-family: var(--mono); font-size: 14px; font-weight: 500; }
+  .shift-title { font-size: 13px; color: var(--text2); margin-top: 2px; }
+  .shift-status { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600; }
+  .shift-status.open { background: rgba(251,191,36,0.2); color: var(--warning); }
+  .shift-status.filled { background: rgba(96,165,250,0.15); color: var(--info); }
+  .shift-status.mine { background: rgba(2,132,199,0.2); color: var(--accent); }
+  .shift-actions { display: flex; gap: 6px; }
+
+  /* MODAL */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 28px; width: 100%; max-width: 440px; animation: modalIn 0.2s ease; }
+  @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: none; } }
+  .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 24px; }
+  .modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+
+  /* STATS */
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .stat-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .stat-value { font-size: 28px; font-weight: 700; font-family: var(--mono); color: var(--accent); }
+  .stat-label { font-size: 12px; color: var(--text2); margin-top: 4px; }
+
+  /* EMPTY STATE */
+  .empty { text-align: center; padding: 48px 20px; color: var(--text3); }
+  .empty-icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-text { font-size: 14px; }
+
+  /* TOAST */
+  #toast { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+  .toast-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; font-size: 13px; animation: toastIn 0.3s ease; display: flex; align-items: center; gap: 8px; min-width: 240px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+  .toast-item.success { border-color: rgba(2,132,199,0.4); }
+  .toast-item.error { border-color: rgba(248,113,113,0.4); color: var(--danger); }
+  @keyframes toastIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: none; } }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 8px 12px; color: var(--text3); font-weight: 500; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+  td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg3); }
+
+  /* MISC */
+  hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+  .text-muted { color: var(--text2); }
+  .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+  .badge-green { background: rgba(2,132,199,0.2); color: var(--accent); }
+  .badge-blue { background: rgba(96,165,250,0.15); color: var(--info); }
+  .badge-yellow { background: rgba(251,191,36,0.2); color: var(--warning); }
+  .badge-red { background: rgba(248,113,113,0.15); color: var(--danger); }
+  select option { background: var(--bg2); }
+  @media (max-width: 600px) {
+    .content { padding: 16px 12px; }
+    .cal-day { min-height: 50px; padding: 4px; }
+    .cal-day-label { font-size: 10px; padding: 4px 0; }
+  }
+</style>
 </head>
 <body>
 
-<!-- ============================================
-     認証画面
-     ============================================ -->
-<div id="auth-screen" style="display:flex">
-  <div class="auth-card">
-    <h1>📅 ShiftBoard</h1>
+<!-- LOADING -->
+<div id="loading">
+  <div class="spinner"></div>
+  <span style="color:var(--text2);font-size:13px;">読み込み中...</span>
+</div>
 
-    <!-- ログインフォーム -->
-    <div class="form-group">
-      <label>メールアドレス</label>
-      <input type="email" id="login-email" placeholder="example@mail.com" />
-    </div>
-    <div class="form-group">
-      <label>パスワード</label>
-      <input type="password" id="login-pass" placeholder="パスワード" />
-    </div>
-    <button class="btn btn-primary" onclick="login()">ログイン</button>
+<!-- AUTH -->
+<div id="auth-page" style="display:none;flex:1;">
+  <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;">
+    <div class="auth-box">
+      <div class="auth-logo">⬡ ShiftBoard</div>
+      <div class="auth-sub">シフト管理をシンプルに</div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchAuthTab('login')">ログイン</button>
+        <button class="auth-tab" onclick="switchAuthTab('register')">新規登録</button>
+      </div>
+      <div id="auth-error" class="error-msg"></div>
+      <div id="auth-success" class="success-msg"></div>
 
-    <div class="auth-toggle">
-      アカウントがない方は <a onclick="toggleRegister()">新規登録</a>
-    </div>
+      <!-- LOGIN -->
+      <div id="login-form">
+        <div style="font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">ログイン先を選択</div>
+        <div class="role-select-wrap">
+          <div class="role-card sel-host" id="lrc-host" onclick="selectLoginRole('host')">
+            <div class="role-card-icon">&#127968;</div>
+            <div class="role-card-label" id="lrc-host-lbl" style="color:var(--accent);">管理者</div>
+            <div class="role-card-desc">シフト作成・管理</div>
+          </div>
+          <div class="role-card" id="lrc-staff" onclick="selectLoginRole('staff')">
+            <div class="role-card-icon">&#128100;</div>
+            <div class="role-card-label" id="lrc-staff-lbl">従業員</div>
+            <div class="role-card-desc">シフト応募・確認</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>メールアドレス</label>
+          <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>パスワード</label>
+          <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+        </div>
+        <button class="btn btn-primary" id="login-btn" onclick="doLogin()">管理者としてログイン</button>
+      </div>
 
-    <!-- 新規登録フォーム（初期非表示） -->
-    <div id="register-form" style="display:none">
-      <div class="divider"></div>
-      <div class="form-group">
-        <label>名前</label>
-        <input type="text" id="reg-name" placeholder="山田 太郎" />
+      <!-- REGISTER -->
+      <div id="register-form" style="display:none;">
+        <div style="font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">登録するロールを選択</div>
+        <div class="role-select-wrap">
+          <div class="role-card" id="rrc-host" onclick="selectRegRole('host')">
+            <div class="role-card-icon">&#127968;</div>
+            <div class="role-card-label" id="rrc-host-lbl">管理者</div>
+            <div class="role-card-desc">シフト作成・管理</div>
+          </div>
+          <div class="role-card sel-staff" id="rrc-staff" onclick="selectRegRole('staff')">
+            <div class="role-card-icon">&#128100;</div>
+            <div class="role-card-label" id="rrc-staff-lbl" style="color:var(--info);">従業員</div>
+            <div class="role-card-desc">シフト応募・確認</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>お名前</label>
+          <input type="text" id="reg-name" placeholder="山田 太郎">
+        </div>
+        <div class="form-group">
+          <label>メールアドレス</label>
+          <input type="email" id="reg-email" placeholder="you@example.com">
+        </div>
+        <div class="form-group">
+          <label>パスワード（6文字以上）</label>
+          <input type="password" id="reg-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doRegister()">
+        </div>
+        <button class="btn btn-primary" id="reg-btn" onclick="doRegister()">従業員として登録</button>
       </div>
-      <div class="form-group">
-        <label>メールアドレス</label>
-        <input type="email" id="reg-email" placeholder="example@mail.com" />
-      </div>
-      <div class="form-group">
-        <label>パスワード（6文字以上）</label>
-        <input type="password" id="reg-pass" placeholder="パスワード" />
-      </div>
-      <div class="form-group">
-        <label>役割</label>
-        <select id="reg-role">
-          <option value="employee">スタッフ</option>
-          <option value="host">管理者（ホスト）</option>
-        </select>
-      </div>
-      <button class="btn btn-primary" onclick="register()">登録する</button>
     </div>
-
-    <p id="auth-error" class="error-msg"></p>
   </div>
 </div>
 
-
-<!-- ============================================
-     アプリ画面
-     ============================================ -->
-<div id="app-screen" style="display:none; flex-direction:column; min-height:100vh">
-
-  <!-- ヘッダー -->
-  <header class="app-header">
-    <div class="logo">📅 ShiftBoard</div>
-    <div class="header-user">
-      <span id="user-name"></span>
-      <span id="user-role" class="role-tag"></span>
-      <!-- ホストのみ：メンバー管理ボタン -->
-      <button class="btn btn-sm host-only" onclick="openMemberModal()">👥 メンバー</button>
-      <button class="btn btn-ghost" onclick="logout()">ログアウト</button>
-    </div>
-  </header>
-
-  <!-- メインタブ -->
-  <nav class="main-tabs">
-    <button class="main-tab-btn" data-tab="shift"   onclick="switchTab('shift')">📅 シフト表</button>
-    <button class="main-tab-btn" data-tab="request" onclick="switchTab('request')">📝 休み管理</button>
-    <button class="main-tab-btn host-only" data-tab="settings" onclick="switchTab('settings')">⚙️ 設定</button>
+<!-- APP -->
+<div id="app" style="display:none;">
+  <nav>
+    <div class="nav-logo">⬡ ShiftBoard</div>
+    <span class="nav-user" id="nav-user-name"></span>
+    <span class="nav-role" id="nav-role-badge"></span>
+    <button class="btn btn-ghost btn-sm" onclick="doLogout()">ログアウト</button>
   </nav>
 
-  <!-- ========== シフト表タブ ========== -->
-  <div id="tab-shift" class="tab-content" style="display:none">
-    <div class="cal-nav">
-      <button class="btn btn-sm" onclick="prevMonth()">◀ 前月</button>
-      <h2 id="cal-title"></h2>
-      <button class="btn btn-sm" onclick="nextMonth()">次月 ▶</button>
-    </div>
-
-    <!-- 凡例 -->
-    <div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap">
-      <span class="shift-badge on" style="border-radius:12px">出勤</span>
-      <span class="shift-badge off" style="border-radius:12px">休み（承認済）</span>
-      <span class="shift-badge pending" style="border-radius:12px">申請中</span>
-    </div>
-
-    <div class="cal-grid" id="cal-grid"></div>
-
-    <!-- ホスト用：シフト一括設定ボタン -->
-    <div class="host-only" style="margin-top:16px">
-      <button class="btn btn-outline" onclick="openShiftModal()">✏️ シフトを設定する</button>
-    </div>
+  <!-- HOST TABS -->
+  <div class="tabs" id="host-tabs" style="display:none;">
+    <button class="tab-btn active" onclick="switchPage('calendar','host-tabs')">カレンダー</button>
+    <button class="tab-btn" onclick="switchPage('shifts','host-tabs')">シフト管理</button>
+    <button class="tab-btn" onclick="switchPage('members','host-tabs')">スタッフ</button>
+    <button class="tab-btn" onclick="switchPage('share','host-tabs')">配布</button>
   </div>
 
+  <!-- STAFF TABS -->
+  <div class="tabs" id="staff-tabs" style="display:none;">
+    <button class="tab-btn active" onclick="switchPage('calendar','staff-tabs')">カレンダー</button>
+    <button class="tab-btn" onclick="switchPage('my-shifts','staff-tabs')">マイシフト</button>
+    <button class="tab-btn" onclick="switchPage('apply','staff-tabs')">希望提出</button>
+  </div>
 
-  <!-- ========== 休み管理タブ ========== -->
-  <div id="tab-request" class="tab-content" style="display:none">
+  <div class="content">
 
-    <!-- サブタブ -->
-    <div class="sub-tabs">
-      <button class="sub-tab-btn" data-sub="apply"   onclick="switchSubTab('apply')">申請する</button>
-      <button class="sub-tab-btn" data-sub="history" onclick="switchSubTab('history')">申請履歴</button>
-      <button class="sub-tab-btn host-only" data-sub="manage" onclick="switchSubTab('manage')">承認管理</button>
+    <!-- CALENDAR PAGE -->
+    <div id="page-calendar" class="page active">
+      <div class="section-header">
+        <div class="cal-nav">
+          <button onclick="changeMonth(-1)">‹</button>
+          <div class="cal-month" id="cal-month-label"></div>
+          <button onclick="changeMonth(1)">›</button>
+        </div>
+        <div id="host-add-btn" style="display:none;">
+          <button class="btn btn-primary btn-sm" onclick="openAddShiftModal()">＋ シフト追加</button>
+        </div>
+      </div>
+      <div class="card" style="padding:12px;">
+        <div class="calendar-grid" id="cal-grid"></div>
+      </div>
+      <!-- Selected day detail -->
+      <div id="day-detail" style="display:none;">
+        <div class="card">
+          <div class="card-title" id="day-detail-title">選択した日のシフト</div>
+          <div id="day-shifts-list"></div>
+        </div>
+      </div>
     </div>
 
-    <!-- 申請するサブ -->
-    <div id="sub-apply" class="sub-content" style="display:none">
-      <div class="my-shift-box">
-        📋 私のシフト：<span id="my-shift-display">読み込み中...</span>
+    <!-- SHIFTS MANAGEMENT (HOST) -->
+    <div id="page-shifts" class="page">
+      <div class="section-header">
+        <div class="section-title">シフト一覧</div>
+        <button class="btn btn-primary btn-sm" onclick="openAddShiftModal()">＋ シフト追加</button>
       </div>
-
-      <div class="form-group">
-        <label>休み開始日</label>
-        <input type="date" id="req-start" />
-      </div>
-      <div class="form-group">
-        <label>休み終了日</label>
-        <input type="date" id="req-end" />
-      </div>
-      <div class="form-group">
-        <label>理由（任意）</label>
-        <textarea id="req-reason" rows="3" placeholder="私用、体調不良など"></textarea>
-      </div>
-      <button class="btn btn-primary" onclick="submitRequest()">申請する</button>
+      <div id="all-shifts-list"></div>
     </div>
 
-    <!-- 申請履歴サブ -->
-    <div id="sub-history" class="sub-content" style="display:none">
-      <div id="history-list"></div>
+    <!-- MEMBERS (HOST) -->
+    <div id="page-members" class="page">
+      <div class="section-header">
+        <div class="section-title">スタッフ一覧</div>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <table>
+          <thead>
+            <tr>
+              <th>名前</th>
+              <th>メール</th>
+              <th>ロール</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="members-tbody"></tbody>
+        </table>
+      </div>
     </div>
 
-    <!-- 承認管理サブ（ホストのみ） -->
-    <div id="sub-manage" class="sub-content host-only" style="display:none">
-      <div id="manage-list"></div>
+    <!-- MY SHIFTS (STAFF) -->
+    <div id="page-my-shifts" class="page">
+      <div class="section-header">
+        <div class="section-title">マイシフト</div>
+      </div>
+      <div id="my-shifts-stats" class="stats-grid"></div>
+      <div id="my-shifts-list"></div>
+    </div>
+
+    <!-- APPLY (STAFF) -->
+    <div id="page-apply" class="page">
+      <div class="section-header">
+        <div class="section-title">シフト希望を提出</div>
+      </div>
+      <div id="open-shifts-list"></div>
+    </div>
+
+
+    <!-- SHARE PAGE -->
+    <div id="page-share" class="page">
+      <div class="section-header">
+        <div class="section-title">アプリを配布</div>
+      </div>
+      <div class="card" style="text-align:center;padding:32px 24px;">
+        <div style="font-size:13px;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">アプリURL</div>
+        <div id="share-url-display" style="font-family:var(--mono);font-size:13px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:20px;word-break:break-all;color:var(--text);"></div>
+        <div style="display:flex;gap:8px;justify-content:center;margin-bottom:28px;">
+          <button class="btn btn-primary btn-sm" onclick="copyAppUrl()">URLをコピー</button>
+          <button class="btn btn-ghost btn-sm" onclick="openAppUrl()">URLを開く</button>
+        </div>
+        <div style="font-size:13px;color:var(--text2);margin-bottom:16px;text-transform:uppercase;letter-spacing:.5px;">QRコード</div>
+        <div id="qrcode-container" style="display:inline-block;padding:16px;background:#fff;border-radius:12px;border:1px solid var(--border);margin-bottom:20px;"></div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:20px;">スマホのカメラで読み取るとアプリを開けます</div>
+        <button class="btn btn-ghost btn-sm" onclick="downloadQR()">QRコードを保存</button>
+      </div>
+      <div class="card">
+        <div class="card-title">使い方</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">1</div>
+            <div><div style="font-weight:500;">QRコードを印刷・共有</div><div style="font-size:13px;color:var(--text2);margin-top:2px;">チラシや掲示板に貼るか、LINEで送る</div></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">2</div>
+            <div><div style="font-weight:500;">スタッフがQRを読み取る</div><div style="font-size:13px;color:var(--text2);margin-top:2px;">ブラウザでアプリが開く（インストール不要）</div></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">3</div>
+            <div><div style="font-weight:500;">「従業員」でアカウント作成</div><div style="font-size:13px;color:var(--text2);margin-top:2px;">メール・パスワードで登録してすぐ使える</div></div>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
+</div>
 
+<!-- TOAST -->
+<div id="toast"></div>
 
-  <!-- ========== 設定タブ（ホストのみ） ========== -->
-  <div id="tab-settings" class="tab-content host-only" style="display:none">
-
-    <div class="settings-section">
-      <h3>📧 メール通知設定</h3>
-
-      <!-- メール種別タブ -->
-      <div class="email-tabs">
-        <button class="email-tab-btn active" onclick="switchEmailTab('request')">申請受付（ホスト宛）</button>
-        <button class="email-tab-btn" onclick="switchEmailTab('approval')">承認時（申請者宛）</button>
-        <button class="email-tab-btn" onclick="switchEmailTab('rejection')">却下時（申請者宛）</button>
-      </div>
-
-      <!-- 申請受付 -->
-      <div id="email-panel-request" class="email-settings-panel active">
-        <div class="form-group">
-          <label>件名</label>
-          <input type="text" id="request-subject" />
-        </div>
-        <div class="form-group">
-          <label>冒頭あいさつ（{名前} タグ使用可）</label>
-          <input type="text" id="request-greeting" />
-        </div>
-        <p class="section-title" style="margin-top:12px">送る項目</p>
-        <div class="field-toggles">
-          <label class="toggle-row"><input type="checkbox" id="request-field-applicant_name" /> 申請者名</label>
-          <label class="toggle-row"><input type="checkbox" id="request-field-period" /> 期間</label>
-          <label class="toggle-row"><input type="checkbox" id="request-field-reason" /> 理由</label>
-          <label class="toggle-row"><input type="checkbox" id="request-field-shift_info" /> シフト情報</label>
-          <label class="toggle-row"><input type="checkbox" id="request-field-reviewer_name" disabled /> 承認者名</label>
-          <label class="toggle-row"><input type="checkbox" id="request-field-reviewed_at" disabled /> 承認日時</label>
-        </div>
-        <div class="form-group">
-          <label>末尾の締め文</label>
-          <textarea id="request-footer" rows="2"></textarea>
-        </div>
-        <button class="btn btn-outline btn-sm" onclick="previewEmail('request')">👁 プレビュー</button>
-      </div>
-
-      <!-- 承認時 -->
-      <div id="email-panel-approval" class="email-settings-panel">
-        <div class="form-group">
-          <label>件名</label>
-          <input type="text" id="approval-subject" />
-        </div>
-        <div class="form-group">
-          <label>冒頭あいさつ（{名前} タグ使用可）</label>
-          <input type="text" id="approval-greeting" />
-        </div>
-        <p class="section-title" style="margin-top:12px">送る項目</p>
-        <div class="field-toggles">
-          <label class="toggle-row"><input type="checkbox" id="approval-field-applicant_name" /> 申請者名</label>
-          <label class="toggle-row"><input type="checkbox" id="approval-field-period" /> 期間</label>
-          <label class="toggle-row"><input type="checkbox" id="approval-field-reason" /> 理由</label>
-          <label class="toggle-row"><input type="checkbox" id="approval-field-shift_info" /> シフト情報</label>
-          <label class="toggle-row"><input type="checkbox" id="approval-field-reviewer_name" /> 承認者名</label>
-          <label class="toggle-row"><input type="checkbox" id="approval-field-reviewed_at" /> 承認日時</label>
-        </div>
-        <div class="form-group">
-          <label>末尾の締め文</label>
-          <textarea id="approval-footer" rows="2"></textarea>
-        </div>
-        <button class="btn btn-outline btn-sm" onclick="previewEmail('approval')">👁 プレビュー</button>
-      </div>
-
-      <!-- 却下時 -->
-      <div id="email-panel-rejection" class="email-settings-panel">
-        <div class="form-group">
-          <label>件名</label>
-          <input type="text" id="rejection-subject" />
-        </div>
-        <div class="form-group">
-          <label>冒頭あいさつ（{名前} タグ使用可）</label>
-          <input type="text" id="rejection-greeting" />
-        </div>
-        <p class="section-title" style="margin-top:12px">送る項目</p>
-        <div class="field-toggles">
-          <label class="toggle-row"><input type="checkbox" id="rejection-field-applicant_name" /> 申請者名</label>
-          <label class="toggle-row"><input type="checkbox" id="rejection-field-period" /> 期間</label>
-          <label class="toggle-row"><input type="checkbox" id="rejection-field-reason" /> 理由</label>
-          <label class="toggle-row"><input type="checkbox" id="rejection-field-shift_info" /> シフト情報</label>
-          <label class="toggle-row"><input type="checkbox" id="rejection-field-reviewer_name" /> 承認者名</label>
-          <label class="toggle-row"><input type="checkbox" id="rejection-field-reviewed_at" /> 承認日時</label>
-        </div>
-        <div class="form-group">
-          <label>末尾の締め文</label>
-          <textarea id="rejection-footer" rows="2"></textarea>
-        </div>
-        <button class="btn btn-outline btn-sm" onclick="previewEmail('rejection')">👁 プレビュー</button>
-      </div>
-
-      <div style="margin-top:16px">
-        <button class="btn btn-primary" onclick="saveEmailSettings()">💾 設定を保存</button>
-      </div>
-    </div>
-
-  </div><!-- /tab-settings -->
-
-</div><!-- /app-screen -->
-
-
-<!-- ============================================
-     モーダル：シフト設定（ホスト用）
-     ============================================ -->
-<div id="shift-modal" class="modal-overlay">
-  <div class="modal-box">
-    <div class="modal-header">
-      <h3>✏️ シフト設定</h3>
-      <button class="modal-close" onclick="closeShiftModal()">✕</button>
-    </div>
-
+<!-- ADD SHIFT MODAL -->
+<div class="modal-overlay" id="add-shift-modal">
+  <div class="modal">
+    <div class="modal-title">シフトを追加</div>
     <div class="form-group">
-      <label>メンバーを選択</label>
-      <select id="shift-member-select" onchange="onShiftMemberChange()"></select>
+      <label>タイトル（任意）</label>
+      <input type="text" id="shift-title" placeholder="例：早番、遅番">
     </div>
-
-    <p class="section-title">曜日ごとのシフト</p>
-
-    <!-- 日〜土の設定行 -->
-    <div id="shift-days-form">
-      <div class="shift-day-row">
-        <input type="checkbox" id="shift-day-0-enabled" onchange="updateShiftInputState('0')" />
-        <label>日</label>
-        <input type="time" id="shift-day-0-start" value="09:00" disabled />
-        <span>〜</span>
-        <input type="time" id="shift-day-0-end" value="17:00" disabled />
+    <div class="form-group">
+      <label>日付</label>
+      <input type="date" id="shift-date">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="form-group">
+        <label>開始時間</label>
+        <input type="time" id="shift-start" value="09:00">
       </div>
-      <div class="shift-day-row">
-        <input type="checkbox" id="shift-day-1-enabled" onchange="updateShiftInputState('1')" />
-        <label>月</label>
-        <input type="time" id="shift-day-1-start" value="09:00" disabled />
-        <span>〜</span>
-        <input type="time" id="shift-day-1-end" value="17:00" disabled />
-      </div>
-      <div class="shift-day-row">
-        <input type="checkbox" id="shift-day-2-enabled" onchange="updateShiftInputState('2')" />
-        <label>火</label>
-        <input type="time" id="shift-day-2-start" value="09:00" disabled />
-        <span>〜</span>
-        <input type="time" id="shift-day-2-end" value="17:00" disabled />
-      </div>
-      <div class="shift-day-row">
-        <input type="checkbox" id="shift-day-3-enabled" onchange="updateShiftInputState('3')" />
-        <label>水</label>
-        <input type="time" id="shift-day-3-start" value="09:00" disabled />
-        <span>〜</span>
-        <input type="time" id="shift-day-3-end" value="17:00" disabled />
-      </div>
-      <div class="shift-day-row">
-        <input type="checkbox" id="shift-day-4-enabled" onchange="updateShiftInputState('4')" />
-        <label>木</label>
-        <input type="time" id="shift-day-4-start" value="09:00" disabled />
-        <span>〜</span>
-        <input type="time" id="shift-day-4-end" value="17:00" disabled />
-      </div>
-      <div class="shift-day-row">
-        <input type="checkbox" id="shift-day-5-enabled" onchange="updateShiftInputState('5')" />
-        <label>金</label>
-        <input type="time" id="shift-day-5-start" value="09:00" disabled />
-        <span>〜</span>
-        <input type="time" id="shift-day-5-end" value="17:00" disabled />
-      </div>
-      <div class="shift-day-row">
-        <input type="checkbox" id="shift-day-6-enabled" onchange="updateShiftInputState('6')" />
-        <label>土</label>
-        <input type="time" id="shift-day-6-start" value="09:00" disabled />
-        <span>〜</span>
-        <input type="time" id="shift-day-6-end" value="17:00" disabled />
+      <div class="form-group">
+        <label>終了時間</label>
+        <input type="time" id="shift-end" value="17:00">
       </div>
     </div>
-
-    <div style="margin-top:20px; display:flex; gap:10px">
-      <button class="btn btn-primary" onclick="saveShift()">💾 保存</button>
-      <button class="btn btn-sm" onclick="closeShiftModal()">キャンセル</button>
+    <div class="form-group">
+      <label>必要人数</label>
+      <input type="number" id="shift-needed" value="1" min="1" max="20">
+    </div>
+    <div class="form-group">
+      <label>メモ（任意）</label>
+      <textarea id="shift-note" rows="2" style="resize:vertical;" placeholder="備考など"></textarea>
+    </div>
+    <div id="add-shift-error" class="error-msg"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('add-shift-modal')">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveShift()">保存</button>
     </div>
   </div>
 </div>
 
-
-<!-- ============================================
-     モーダル：メンバー管理（ホスト用）
-     ============================================ -->
-<div id="member-modal" class="modal-overlay">
-  <div class="modal-box">
-    <div class="modal-header">
-      <h3>👥 メンバー管理</h3>
-      <button class="modal-close" onclick="closeMemberModal()">✕</button>
-    </div>
-    <div id="member-list"></div>
-  </div>
-</div>
-
-
-<!-- ============================================
-     モーダル：メールプレビュー
-     ============================================ -->
-<div id="email-preview-modal" class="modal-overlay">
-  <div class="modal-box">
-    <div class="modal-header">
-      <h3>📧 メールプレビュー</h3>
-      <button class="modal-close" onclick="closePreviewModal()">✕</button>
-    </div>
-    <div class="preview-box">
-      <div class="preview-subject">件名: <span id="preview-subject"></span></div>
-      <div class="preview-body" id="preview-body"></div>
+<!-- SHIFT DETAIL MODAL -->
+<div class="modal-overlay" id="shift-detail-modal">
+  <div class="modal">
+    <div class="modal-title" id="detail-modal-title">シフト詳細</div>
+    <div id="detail-modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('shift-detail-modal')">閉じる</button>
+      <button class="btn btn-danger btn-sm" id="detail-delete-btn" style="display:none;" onclick="deleteShiftFromModal()">削除</button>
+      <button class="btn btn-primary btn-sm" id="detail-apply-btn" style="display:none;" onclick="applyShiftFromModal()">応募する</button>
+      <button class="btn btn-danger btn-sm" id="detail-cancel-btn" style="display:none;" onclick="cancelShiftFromModal()">応募取消</button>
     </div>
   </div>
 </div>
 
-
-<!-- ============================================
-     トースト通知
-     ============================================ -->
-<div id="toast" class="toast"></div>
-
-
-<!-- ============================================
-     スクリプト読み込み
-     ============================================ -->
-<!-- Supabase クライアント -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<!-- 設定ファイル（あなたの環境に合わせて変更） -->
-<script src="config.js"></script>
-<!-- アプリ本体 -->
-<script src="app.js"></script>
-
-<!-- メール種別タブの切り替え（設定画面内） -->
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script>
-function switchEmailTab(type) {
-  document.querySelectorAll('.email-tab-btn').forEach(btn => btn.classList.remove('active'));
-  document.querySelectorAll('.email-settings-panel').forEach(p => p.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById(`email-panel-${type}`).classList.add('active');
-}
-</script>
+// ============================================================
+// CONFIG
+// ============================================================
+const SUPABASE_URL = 'https://idydpopwmdzepinocgxy.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlkeWRwb3B3bWR6ZXBpbm9jZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwMjY0MDMsImV4cCI6MjA1OTYwMjQwM30.ymlzcaro-uqRvqdYeLIUIOaK4OxKByxwK54w6mSiIKI';
 
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ============================================================
+// STATE
+// ============================================================
+let currentUser = null;
+let currentProfile = null;
+let allShifts = [];
+let allMembers = [];
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth();
+let selectedDate = null;
+let detailShiftId = null;
+
+const WEEKDAYS = ['日','月','火','水','木','金','土'];
+const MONTHS = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+
+// ============================================================
+// INIT
+// ============================================================
+async function init() {
+  // Setup DB tables if needed (will silently fail if already exist)
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      await loadUserAndShow(session.user);
+    } else {
+      showAuth();
+    }
+  } catch(e) {
+    showAuth();
+  }
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_OUT') {
+      currentUser = null; currentProfile = null;
+      showAuth();
+    }
+  });
+}
+
+async function loadUserAndShow(user, forcedRole) {
+  currentUser = user;
+  let { data: profile } = await sb.from('profiles').select('*').eq('id', user.id).single();
+  if (!profile) {
+    const meta = user.user_metadata || {};
+    const role = forcedRole || meta.intended_role || 'staff';
+    const { data: np } = await sb.from('profiles').insert({
+      id: user.id,
+      email: user.email,
+      name: meta.name || user.email.split('@')[0],
+      role
+    }).select().single();
+    profile = np;
+  } else if (forcedRole && profile.role !== forcedRole) {
+    // Role mismatch warning
+    showAuthError(forcedRole === 'host'
+      ? 'このアカウントは従業員として登録されています。従業員でログインしてください。'
+      : 'このアカウントは管理者として登録されています。管理者でログインしてください。');
+    await sb.auth.signOut();
+    return;
+  }
+  currentProfile = profile;
+  showApp();
+}
+
+// ============================================================
+// AUTH UI
+// ============================================================
+function showAuth() {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('auth-page').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+}
+
+function showApp() {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('auth-page').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('app').style.flexDirection = 'column';
+
+  const isHost = currentProfile?.role === 'host';
+  document.getElementById('nav-user-name').textContent = currentProfile?.name || currentUser.email;
+  const badge = document.getElementById('nav-role-badge');
+  badge.textContent = isHost ? 'HOST' : 'STAFF';
+  badge.className = 'nav-role ' + (isHost ? 'host' : 'staff');
+
+  document.getElementById('host-tabs').style.display = isHost ? 'flex' : 'none';
+  document.getElementById('staff-tabs').style.display = isHost ? 'none' : 'flex';
+  document.getElementById('host-add-btn').style.display = isHost ? 'block' : 'none';
+
+  loadData();
+}
+
+// login role selection
+let loginSelectedRole = 'host';
+let regSelectedRole = 'staff';
+
+function selectLoginRole(role) {
+  loginSelectedRole = role;
+  document.getElementById('lrc-host').className = 'role-card' + (role === 'host' ? ' sel-host' : '');
+  document.getElementById('lrc-staff').className = 'role-card' + (role === 'staff' ? ' sel-staff' : '');
+  document.getElementById('lrc-host-lbl').style.color = role === 'host' ? 'var(--accent)' : '';
+  document.getElementById('lrc-staff-lbl').style.color = role === 'staff' ? 'var(--info)' : '';
+  const btn = document.getElementById('login-btn');
+  if (role === 'host') {
+    btn.textContent = '管理者としてログイン';
+    btn.style.background = 'var(--accent)';
+    btn.style.color = '#000';
+  } else {
+    btn.textContent = '従業員としてログイン';
+    btn.style.background = 'var(--info)';
+    btn.style.color = '#000';
+  }
+}
+
+function selectRegRole(role) {
+  regSelectedRole = role;
+  document.getElementById('rrc-host').className = 'role-card' + (role === 'host' ? ' sel-host' : '');
+  document.getElementById('rrc-staff').className = 'role-card' + (role === 'staff' ? ' sel-staff' : '');
+  document.getElementById('rrc-host-lbl').style.color = role === 'host' ? 'var(--accent)' : '';
+  document.getElementById('rrc-staff-lbl').style.color = role === 'staff' ? 'var(--info)' : '';
+  const btn = document.getElementById('reg-btn');
+  if (role === 'host') {
+    btn.textContent = '管理者として登録';
+    btn.style.background = 'var(--accent)';
+    btn.style.color = '#000';
+  } else {
+    btn.textContent = '従業員として登録';
+    btn.style.background = 'var(--info)';
+    btn.style.color = '#000';
+  }
+}
+
+function switchAuthTab(tab) {
+  document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
+  document.querySelectorAll('.auth-tab').forEach((t, i) => {
+    t.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
+  });
+  clearAuthMessages();
+}
+
+function clearAuthMessages() {
+  ['auth-error','auth-success'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+    document.getElementById(id).textContent = '';
+  });
+}
+
+function showAuthError(msg) {
+  const el = document.getElementById('auth-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function showAuthSuccess(msg) {
+  const el = document.getElementById('auth-success');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+async function doLogin() {
+  clearAuthMessages();
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  if (!email || !pass) { showAuthError('メールとパスワードを入力してください'); return; }
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+  if (error) {
+    const msg = error.message.includes('Invalid') ? 'メールまたはパスワードが正しくありません' : error.message;
+    showAuthError(msg);
+    return;
+  }
+  if (data?.user) await loadUserAndShow(data.user, loginSelectedRole);
+}
+
+async function doRegister() {
+  clearAuthMessages();
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const pass = document.getElementById('reg-pass').value;
+  if (!name || !email || !pass) { showAuthError('全ての項目を入力してください'); return; }
+  if (pass.length < 6) { showAuthError('パスワードは6文字以上にしてください'); return; }
+  const { data, error } = await sb.auth.signUp({
+    email, password: pass,
+    options: { data: { name, intended_role: regSelectedRole } }
+  });
+  if (error) { showAuthError(error.message); return; }
+  if (data?.user && data.session) {
+    await loadUserAndShow(data.user, regSelectedRole);
+  } else {
+    showAuthSuccess('アカウントを作成しました！確認メールのリンクをクリックしてログインしてください。');
+  }
+}
+
+async function doLogout() {
+  await sb.auth.signOut();
+}
+
+// ============================================================
+// DATA
+// ============================================================
+async function loadData() {
+  await Promise.all([loadShifts(), loadMembers()]);
+  renderCalendar();
+  renderCurrentPage();
+}
+
+async function loadShifts() {
+  const { data } = await sb.from('shifts').select(`*, applications(id, user_id, profiles(name, email))`).order('date').order('start_time');
+  allShifts = data || [];
+}
+
+async function loadMembers() {
+  const { data } = await sb.from('profiles').select('*').order('name');
+  allMembers = data || [];
+}
+
+// ============================================================
+// CALENDAR
+// ============================================================
+function changeMonth(delta) {
+  calMonth += delta;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  selectedDate = null;
+  document.getElementById('day-detail').style.display = 'none';
+  renderCalendar();
+}
+
+function renderCalendar() {
+  document.getElementById('cal-month-label').textContent = `${calYear}年 ${MONTHS[calMonth]}`;
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+
+  WEEKDAYS.forEach((d,i) => {
+    const el = document.createElement('div');
+    el.className = 'cal-day-label';
+    el.textContent = d;
+    if (i === 0) el.style.color = '#f87171';
+    if (i === 6) el.style.color = '#60a5fa';
+    grid.appendChild(el);
+  });
+
+  const first = new Date(calYear, calMonth, 1);
+  const last = new Date(calYear, calMonth + 1, 0);
+  const today = new Date();
+  const todayStr = toDateStr(today);
+
+  for (let i = 0; i < first.getDay(); i++) {
+    const prev = new Date(calYear, calMonth, -i);
+    const el = makeDayEl(prev, true);
+    grid.insertBefore(el, grid.children[7 + (first.getDay() - 1 - i)]);
+  }
+
+  for (let d = 1; d <= last.getDate(); d++) {
+    const date = new Date(calYear, calMonth, d);
+    const dateStr = toDateStr(date);
+    const el = document.createElement('div');
+    el.className = 'cal-day' + (dateStr === todayStr ? ' today' : '') + (dateStr === selectedDate ? ' selected' : '');
+    el.innerHTML = `<div class="cal-date">${d}</div>`;
+
+    const dayShifts = allShifts.filter(s => s.date === dateStr);
+    dayShifts.slice(0, 3).forEach(s => {
+      const dot = document.createElement('div');
+      const isMine = s.applications?.some(a => a.user_id === currentUser.id);
+      const isFull = (s.applications?.length || 0) >= s.needed_count;
+      dot.className = 'shift-dot ' + (isMine ? 'mine' : isFull ? 'filled' : 'open');
+      dot.textContent = s.title || `${s.start_time.slice(0,5)}〜`;
+      el.appendChild(dot);
+    });
+    if (dayShifts.length > 3) {
+      const more = document.createElement('div');
+      more.className = 'shift-dot';
+      more.style.color = 'var(--text3)';
+      more.textContent = `+${dayShifts.length - 3}件`;
+      el.appendChild(more);
+    }
+
+    el.onclick = () => selectDay(dateStr);
+    grid.appendChild(el);
+  }
+}
+
+function makeDayEl(date, otherMonth) {
+  const el = document.createElement('div');
+  el.className = 'cal-day other-month';
+  el.innerHTML = `<div class="cal-date">${date.getDate()}</div>`;
+  return el;
+}
+
+function selectDay(dateStr) {
+  selectedDate = dateStr;
+  document.querySelectorAll('.cal-day').forEach(el => el.classList.remove('selected'));
+  renderCalendar();
+  const dayShifts = allShifts.filter(s => s.date === dateStr);
+  const detail = document.getElementById('day-detail');
+  const date = new Date(dateStr + 'T00:00:00');
+  document.getElementById('day-detail-title').textContent =
+    `${date.getMonth()+1}月${date.getDate()}日（${WEEKDAYS[date.getDay()]}）のシフト`;
+
+  const list = document.getElementById('day-shifts-list');
+  if (dayShifts.length === 0) {
+    list.innerHTML = '<div class="empty"><div class="empty-text">この日のシフトはありません</div></div>';
+  } else {
+    list.innerHTML = dayShifts.map(s => renderShiftItemHTML(s)).join('');
+  }
+  detail.style.display = 'block';
+}
+
+// ============================================================
+// SHIFT RENDERING
+// ============================================================
+function renderShiftItemHTML(s) {
+  const date = new Date(s.date + 'T00:00:00');
+  const appliedCount = s.applications?.length || 0;
+  const isMine = s.applications?.some(a => a.user_id === currentUser.id);
+  const isFull = appliedCount >= s.needed_count;
+  const isHost = currentProfile?.role === 'host';
+
+  const statusText = isMine ? '応募済み' : isFull ? '満員' : '募集中';
+  const statusClass = isMine ? 'mine' : isFull ? 'filled' : 'open';
+
+  return `<div class="shift-item" onclick="openShiftDetail('${s.id}')" style="cursor:pointer;">
+    <div class="shift-date-badge">
+      <div class="day">${date.getDate()}</div>
+      <div class="weekday">${WEEKDAYS[date.getDay()]}</div>
+    </div>
+    <div class="shift-info">
+      <div class="shift-time">${s.start_time.slice(0,5)} 〜 ${s.end_time.slice(0,5)}</div>
+      <div class="shift-title">${s.title || '（タイトルなし）'} · ${appliedCount}/${s.needed_count}人</div>
+    </div>
+    <div><span class="shift-status ${statusClass}">${statusText}</span></div>
+  </div>`;
+}
+
+// ============================================================
+// PAGES
+// ============================================================
+function switchPage(name, tabsId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(`page-${name}`).classList.add('active');
+  document.querySelectorAll(`#${tabsId} .tab-btn`).forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  renderPageContent(name);
+}
+
+function renderCurrentPage() {
+  const active = document.querySelector('.page.active');
+  if (active) renderPageContent(active.id.replace('page-', ''));
+}
+
+function renderPageContent(name) {
+  if (name === 'calendar') renderCalendar();
+  else if (name === 'shifts') renderAllShifts();
+  else if (name === 'members') renderMembers();
+  else if (name === 'my-shifts') renderMyShifts();
+  else if (name === 'apply') renderApply();
+  else if (name === 'share') renderShare();
+}
+
+function renderAllShifts() {
+  const el = document.getElementById('all-shifts-list');
+  if (allShifts.length === 0) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">シフトがありません。追加してください。</div></div>';
+    return;
+  }
+  el.innerHTML = allShifts.map(s => renderShiftItemHTML(s)).join('');
+}
+
+function renderMembers() {
+  const tbody = document.getElementById('members-tbody');
+  tbody.innerHTML = allMembers.map(m => `
+    <tr>
+      <td><strong>${m.name || '（未設定）'}</strong></td>
+      <td style="color:var(--text2);">${m.email}</td>
+      <td><span class="badge ${m.role === 'host' ? 'badge-green' : 'badge-blue'}">${m.role === 'host' ? 'HOST' : 'STAFF'}</span></td>
+      <td>
+        ${m.id !== currentUser.id ? `
+          <button class="btn btn-ghost btn-sm" onclick="toggleRole('${m.id}','${m.role}')">
+            ${m.role === 'host' ? 'STAFFに変更' : 'HOSTに変更'}
+          </button>` : '<span style="color:var(--text3);font-size:12px;">あなた</span>'}
+      </td>
+    </tr>`).join('');
+}
+
+function renderMyShifts() {
+  const myShifts = allShifts.filter(s => s.applications?.some(a => a.user_id === currentUser.id));
+  const now = new Date();
+
+  const upcoming = myShifts.filter(s => new Date(s.date) >= now);
+  const past = myShifts.filter(s => new Date(s.date) < now);
+
+  // Stats
+  const statsEl = document.getElementById('my-shifts-stats');
+  const totalHours = myShifts.reduce((sum, s) => {
+    const [sh, sm] = s.start_time.split(':').map(Number);
+    const [eh, em] = s.end_time.split(':').map(Number);
+    return sum + (eh * 60 + em - sh * 60 - sm) / 60;
+  }, 0);
+
+  statsEl.innerHTML = `
+    <div class="stat-card"><div class="stat-value">${upcoming.length}</div><div class="stat-label">今後のシフト</div></div>
+    <div class="stat-card"><div class="stat-value">${myShifts.length}</div><div class="stat-label">合計シフト数</div></div>
+    <div class="stat-card"><div class="stat-value">${Math.round(totalHours)}</div><div class="stat-label">合計時間</div></div>`;
+
+  const el = document.getElementById('my-shifts-list');
+  if (myShifts.length === 0) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">📅</div><div class="empty-text">まだシフトに応募していません</div></div>';
+    return;
+  }
+  el.innerHTML = (upcoming.length ? '<div style="color:var(--text2);font-size:12px;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px;">今後</div>' + upcoming.map(s => renderShiftItemHTML(s)).join('') : '') +
+    (past.length ? '<div style="color:var(--text3);font-size:12px;margin:16px 0 10px;text-transform:uppercase;letter-spacing:.5px;">過去</div>' + past.map(s => renderShiftItemHTML(s)).join('') : '');
+}
+
+function renderApply() {
+  const el = document.getElementById('open-shifts-list');
+  const open = allShifts.filter(s => {
+    const isMine = s.applications?.some(a => a.user_id === currentUser.id);
+    const isFull = (s.applications?.length || 0) >= s.needed_count;
+    const future = new Date(s.date) >= new Date(new Date().toDateString());
+    return !isMine && !isFull && future;
+  });
+  if (open.length === 0) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">✅</div><div class="empty-text">応募できるシフトはありません</div></div>';
+    return;
+  }
+  el.innerHTML = open.map(s => renderShiftItemHTML(s)).join('');
+}
+
+// ============================================================
+// SHIFT DETAIL MODAL
+// ============================================================
+function openShiftDetail(id) {
+  detailShiftId = id;
+  const s = allShifts.find(sh => sh.id === id);
+  if (!s) return;
+
+  const isHost = currentProfile?.role === 'host';
+  const isMine = s.applications?.some(a => a.user_id === currentUser.id);
+  const isFull = (s.applications?.length || 0) >= s.needed_count;
+  const date = new Date(s.date + 'T00:00:00');
+
+  document.getElementById('detail-modal-title').textContent =
+    `${date.getFullYear()}/${date.getMonth()+1}/${date.getDate()} (${WEEKDAYS[date.getDay()]})`;
+
+  const applicants = s.applications || [];
+  const body = document.getElementById('detail-modal-body');
+  body.innerHTML = `
+    <div style="background:var(--bg3);border-radius:10px;padding:14px;margin-bottom:16px;">
+      <div style="font-size:20px;font-weight:700;font-family:var(--mono);">${s.start_time.slice(0,5)} 〜 ${s.end_time.slice(0,5)}</div>
+      ${s.title ? `<div style="color:var(--text2);margin-top:4px;">${s.title}</div>` : ''}
+      ${s.note ? `<div style="color:var(--text2);font-size:13px;margin-top:8px;">${s.note}</div>` : ''}
+    </div>
+    <div style="display:flex;gap:12px;margin-bottom:16px;">
+      <div style="flex:1;background:var(--bg3);border-radius:8px;padding:12px;text-align:center;">
+        <div style="font-size:22px;font-weight:700;color:var(--accent)">${applicants.length}</div>
+        <div style="font-size:12px;color:var(--text2);">応募人数</div>
+      </div>
+      <div style="flex:1;background:var(--bg3);border-radius:8px;padding:12px;text-align:center;">
+        <div style="font-size:22px;font-weight:700;">${s.needed_count}</div>
+        <div style="font-size:12px;color:var(--text2);">必要人数</div>
+      </div>
+    </div>
+    ${applicants.length > 0 ? `
+      <div style="font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">応募者</div>
+      ${applicants.map(a => `<div style="padding:8px 12px;background:var(--bg3);border-radius:8px;margin-bottom:6px;font-size:13px;">
+        ${a.profiles?.name || a.profiles?.email || '不明'}
+        ${a.user_id === currentUser.id ? '<span class="badge badge-green" style="margin-left:8px;">あなた</span>' : ''}
+      </div>`).join('')}
+    ` : `<div style="color:var(--text3);font-size:13px;">まだ応募者はいません</div>`}`;
+
+  document.getElementById('detail-delete-btn').style.display = isHost ? 'inline-flex' : 'none';
+  document.getElementById('detail-apply-btn').style.display = (!isHost && !isMine && !isFull) ? 'inline-flex' : 'none';
+  document.getElementById('detail-cancel-btn').style.display = (!isHost && isMine) ? 'inline-flex' : 'none';
+
+  openModal('shift-detail-modal');
+}
+
+async function applyShiftFromModal() {
+  const { error } = await sb.from('applications').insert({ shift_id: detailShiftId, user_id: currentUser.id });
+  if (error) { toast('エラー: ' + error.message, 'error'); return; }
+  toast('応募しました！', 'success');
+  closeModal('shift-detail-modal');
+  await loadData();
+}
+
+async function cancelShiftFromModal() {
+  const { error } = await sb.from('applications').delete().eq('shift_id', detailShiftId).eq('user_id', currentUser.id);
+  if (error) { toast('エラー: ' + error.message, 'error'); return; }
+  toast('応募を取り消しました', 'success');
+  closeModal('shift-detail-modal');
+  await loadData();
+}
+
+async function deleteShiftFromModal() {
+  if (!confirm('このシフトを削除しますか？応募データも全て削除されます。')) return;
+  await sb.from('applications').delete().eq('shift_id', detailShiftId);
+  const { error } = await sb.from('shifts').delete().eq('id', detailShiftId);
+  if (error) { toast('エラー: ' + error.message, 'error'); return; }
+  toast('シフトを削除しました', 'success');
+  closeModal('shift-detail-modal');
+  await loadData();
+}
+
+// ============================================================
+// ADD SHIFT
+// ============================================================
+function openAddShiftModal() {
+  const today = toDateStr(new Date());
+  document.getElementById('shift-date').value = selectedDate || today;
+  document.getElementById('shift-title').value = '';
+  document.getElementById('shift-note').value = '';
+  document.getElementById('shift-start').value = '09:00';
+  document.getElementById('shift-end').value = '17:00';
+  document.getElementById('shift-needed').value = '1';
+  document.getElementById('add-shift-error').style.display = 'none';
+  openModal('add-shift-modal');
+}
+
+async function saveShift() {
+  const date = document.getElementById('shift-date').value;
+  const start = document.getElementById('shift-start').value;
+  const end = document.getElementById('shift-end').value;
+  const needed = parseInt(document.getElementById('shift-needed').value) || 1;
+  const title = document.getElementById('shift-title').value.trim();
+  const note = document.getElementById('shift-note').value.trim();
+
+  if (!date) {
+    document.getElementById('add-shift-error').textContent = '日付を入力してください';
+    document.getElementById('add-shift-error').style.display = 'block';
+    return;
+  }
+
+  const { error } = await sb.from('shifts').insert({ date, start_time: start, end_time: end, needed_count: needed, title: title || null, note: note || null, created_by: currentUser.id });
+  if (error) {
+    document.getElementById('add-shift-error').textContent = error.message;
+    document.getElementById('add-shift-error').style.display = 'block';
+    return;
+  }
+  toast('シフトを追加しました', 'success');
+  closeModal('add-shift-modal');
+  await loadData();
+}
+
+// ============================================================
+// MEMBERS
+// ============================================================
+async function toggleRole(userId, currentRole) {
+  const newRole = currentRole === 'host' ? 'staff' : 'host';
+  const { error } = await sb.from('profiles').update({ role: newRole }).eq('id', userId);
+  if (error) { toast('エラー: ' + error.message, 'error'); return; }
+  toast('ロールを変更しました', 'success');
+  await loadMembers();
+  renderMembers();
+}
+
+// ============================================================
+// MODAL / TOAST / UTILS
+// ============================================================
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('modal-overlay')) {
+    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+  }
+});
+
+function toast(msg, type = 'success') {
+  const container = document.getElementById('toast');
+  const el = document.createElement('div');
+  el.className = `toast-item ${type}`;
+  el.innerHTML = `<span>${type === 'success' ? '✓' : '✗'}</span> ${msg}`;
+  container.appendChild(el);
+  setTimeout(() => el.remove(), 3000);
+}
+
+function toDateStr(date) {
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+}
+
+
+// ============================================================
+// SHARE / QR
+// ============================================================
+let qrGenerated = false;
+
+function renderShare() {
+  const url = window.location.href.split('?')[0].split('#')[0];
+  document.getElementById('share-url-display').textContent = url;
+  if (!qrGenerated) {
+    document.getElementById('qrcode-container').innerHTML = '';
+    new QRCode(document.getElementById('qrcode-container'), {
+      text: url,
+      width: 200,
+      height: 200,
+      colorDark: '#1a1a18',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.H
+    });
+    qrGenerated = true;
+  }
+}
+
+function copyAppUrl() {
+  const url = document.getElementById('share-url-display').textContent;
+  navigator.clipboard.writeText(url).then(() => toast('URLをコピーしました', 'success'));
+}
+
+function openAppUrl() {
+  const url = document.getElementById('share-url-display').textContent;
+  window.open(url, '_blank');
+}
+
+function downloadQR() {
+  const canvas = document.querySelector('#qrcode-container canvas');
+  if (!canvas) { toast('QRコードを先に表示してください', 'error'); return; }
+  const link = document.createElement('a');
+  link.download = 'shiftboard-qr.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  toast('QRコードを保存しました', 'success');
+}
+
+// ============================================================
+// START
+// ============================================================
+init();
+</script>
 </body>
 </html>
