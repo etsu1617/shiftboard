@@ -456,7 +456,7 @@
 // CONFIG
 // ============================================================
 const SUPABASE_URL = 'https://idydpopwmdzepinocgxy.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlkeWRwb3B3bWR6ZXBpbm9jZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwMjY0MDMsImV4cCI6MjA1OTYwMjQwM30.ymlzcaro-uqRvqdYeLIUIOaK4OxKByxwK54w6mSiIKI';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlkeWRwb3B3bWR6ZXBpbm9jZ3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MzMzMzAsImV4cCI6MjA5MjEwOTMzMH0.ymlzcaro-uqRvqdVeLlUlOaK40xKByxwK54w6mSilKI';
 
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -501,27 +501,35 @@ async function init() {
 
 async function loadUserAndShow(user, forcedRole) {
   currentUser = user;
-  let { data: profile } = await sb.from('profiles').select('*').eq('id', user.id).single();
-  if (!profile) {
-    const meta = user.user_metadata || {};
-    const role = forcedRole || meta.intended_role || 'staff';
-    const { data: np } = await sb.from('profiles').insert({
-      id: user.id,
-      email: user.email,
-      name: meta.name || user.email.split('@')[0],
-      role
-    }).select().single();
-    profile = np;
-  } else if (forcedRole && profile.role !== forcedRole) {
-    // Role mismatch warning
-    showAuthError(forcedRole === 'host'
-      ? 'このアカウントは従業員として登録されています。従業員でログインしてください。'
-      : 'このアカウントは管理者として登録されています。管理者でログインしてください。');
-    await sb.auth.signOut();
-    return;
+  try {
+    let { data: profile, error } = await sb.from('profiles').select('*').eq('id', user.id).single();
+    if (!profile) {
+      const meta = user.user_metadata || {};
+      const role = forcedRole || meta.intended_role || 'staff';
+      const { data: np, error: insertError } = await sb.from('profiles').insert({
+        id: user.id,
+        email: user.email,
+        name: meta.name || user.email.split('@')[0],
+        role
+      }).select().single();
+      if (insertError) {
+        // Profile might already exist (race condition), try fetching again
+        const { data: retry } = await sb.from('profiles').select('*').eq('id', user.id).single();
+        profile = retry;
+      } else {
+        profile = np;
+      }
+    }
+    if (!profile) {
+      // Fallback: create minimal profile object
+      profile = { id: user.id, email: user.email, name: user.email.split('@')[0], role: forcedRole || 'staff' };
+    }
+    currentProfile = profile;
+    showApp();
+  } catch(e) {
+    currentProfile = { id: user.id, email: user.email, name: user.email.split('@')[0], role: forcedRole || 'staff' };
+    showApp();
   }
-  currentProfile = profile;
-  showApp();
 }
 
 // ============================================================
@@ -627,7 +635,14 @@ async function doLogin() {
   if (!email || !pass) { showAuthError('メールとパスワードを入力してください'); return; }
   const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
   if (error) {
-    const msg = error.message.includes('Invalid') ? 'メールまたはパスワードが正しくありません' : error.message;
+    let msg = 'メールまたはパスワードが正しくありません';
+    if (error.message.includes('Email not confirmed')) {
+      msg = 'メールアドレスの確認が完了していません。届いたメールのリンクをクリックするか、Supabaseで確認を無効にしてください。';
+    } else if (error.message.includes('Invalid')) {
+      msg = 'メールまたはパスワードが正しくありません';
+    } else {
+      msg = error.message;
+    }
     showAuthError(msg);
     return;
   }
@@ -645,11 +660,22 @@ async function doRegister() {
     email, password: pass,
     options: { data: { name, intended_role: regSelectedRole } }
   });
-  if (error) { showAuthError(error.message); return; }
+  if (error) {
+    if (error.message.includes('already registered') || error.message.includes('already been registered')) {
+      showAuthError('このメールアドレスはすでに登録されています。ログインしてください。');
+    } else {
+      showAuthError(error.message);
+    }
+    return;
+  }
   if (data?.user && data.session) {
+    // Email confirmation disabled - logged in directly
     await loadUserAndShow(data.user, regSelectedRole);
+  } else if (data?.user) {
+    // Email confirmation required
+    showAuthSuccess('確認メールを送りました。メール内のリンクをクリックしてからログインしてください。');
   } else {
-    showAuthSuccess('アカウントを作成しました！確認メールのリンクをクリックしてログインしてください。');
+    showAuthSuccess('登録完了！ログインしてください。');
   }
 }
 
