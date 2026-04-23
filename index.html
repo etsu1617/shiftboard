@@ -29,7 +29,6 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 button{cursor:pointer;font-family:inherit}
 input,select,textarea{font-family:inherit}
 
-/* Auth */
 #auth-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
 .auth-card{background:var(--bg2);border-radius:var(--radius);box-shadow:var(--shadow);padding:32px;width:100%;max-width:400px}
 .auth-logo{text-align:center;margin-bottom:24px}
@@ -49,7 +48,7 @@ input,select,textarea{font-family:inherit}
 .form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:0.95rem;background:var(--bg);color:var(--text);transition:border .2s;outline:none}
 .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--accent)}
 .form-group textarea{resize:vertical;min-height:80px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border:none;border-radius:8px;font-size:0.95rem;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border:none;border-radius:8px;font-size:0.95rem;font-weight:600;cursor:pointer;transition:all .2s}
 .btn-primary{background:var(--accent);color:#fff}
 .btn-primary:hover{background:var(--accent2)}
 .btn-danger{background:var(--danger);color:#fff}
@@ -62,12 +61,11 @@ input,select,textarea{font-family:inherit}
 .auth-msg.error{background:#fef2f2;color:var(--danger);border:1px solid #fecaca}
 .auth-msg.success{background:#f0fdf4;color:var(--success);border:1px solid #bbf7d0}
 
-/* App layout */
 #app-screen{display:none;min-height:100vh;flex-direction:column}
 .topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 16px;height:56px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
 .topbar-logo{font-size:1.1rem;font-weight:700;color:var(--accent);letter-spacing:-0.5px}
 .topbar-user{margin-left:auto;display:flex;align-items:center;gap:8px}
-.topbar-name{font-size:0.88rem;font-weight:500;color:var(--text)}
+.topbar-name{font-size:0.88rem;font-weight:500}
 .topbar-role{font-size:0.72rem;font-weight:700;background:var(--accent);color:#fff;padding:2px 8px;border-radius:20px;letter-spacing:0.5px}
 .topbar-role.employee{background:var(--success)}
 .topbar-role.viewing{background:var(--warning)}
@@ -78,20 +76,18 @@ input,select,textarea{font-family:inherit}
 .nav-icon{font-size:1.3rem}
 .main-content{flex:1;overflow-y:auto;padding:16px}
 
-/* Cards */
 .card{background:var(--bg2);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px}
 .card-header{padding:16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.card-title{font-size:1rem;font-weight:700;color:var(--text)}
+.card-title{font-size:1rem;font-weight:700}
 .card-body{padding:16px}
 
-/* Calendar */
 .cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .cal-month{font-size:1rem;font-weight:700}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
 .cal-head{text-align:center;font-size:0.72rem;font-weight:600;color:var(--text2);padding:6px 0}
 .cal-head:first-child{color:#ef4444}
 .cal-head:last-child{color:#3b82f6}
-.cal-day{border-radius:8px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-size:0.88rem;gap:2px;transition:background .15s;position:relative}
+.cal-day{border-radius:8px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-size:0.88rem;gap:2px;transition:background .15s}
 .cal-day:hover{background:var(--bg3)}
 .cal-day.today{background:#eff6ff;font-weight:700;color:var(--accent)}
 .cal-day.selected{background:var(--accent);color:#fff}
@@ -103,7 +99,6 @@ input,select,textarea{font-family:inherit}
 .cal-day.selected.sunday,.cal-day.selected.saturday{color:#fff}
 .dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
 
-/* Shift items */
 .shift-item{background:var(--bg3);border-radius:8px;padding:12px;margin-bottom:8px;cursor:pointer;border:1.5px solid transparent;transition:all .2s}
 .shift-item:hover{border-color:var(--accent);background:#eff6ff}
 .shift-title{font-weight:600;font-size:0.95rem}
@@ -113,7 +108,6 @@ input,select,textarea{font-family:inherit}
 .shift-badge.applied{background:#dcfce7;color:var(--success)}
 .shift-badge.full{background:#fef9c3;color:var(--warning)}
 
-/* Members table */
 .members-table{width:100%;border-collapse:collapse}
 .members-table th,.members-table td{padding:10px;text-align:left;border-bottom:1px solid var(--border);font-size:0.88rem}
 .members-table th{color:var(--text2);font-weight:600}
@@ -121,7 +115,6 @@ input,select,textarea{font-family:inherit}
 .role-badge.host{background:#dbeafe;color:#1d4ed8}
 .role-badge.employee{background:#dcfce7;color:#15803d}
 
-/* Modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:flex;align-items:flex-end;justify-content:center}
 .modal-overlay.hidden{display:none}
 .modal{background:var(--bg2);border-radius:var(--radius) var(--radius) 0 0;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;padding:24px;padding-bottom:40px}
@@ -129,11 +122,9 @@ input,select,textarea{font-family:inherit}
 .modal-title{font-size:1.1rem;font-weight:700}
 .modal-close{background:transparent;border:none;font-size:1.4rem;color:var(--text2);cursor:pointer;line-height:1}
 
-/* Toast */
 #toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 20px;border-radius:20px;font-size:0.9rem;z-index:300;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
 #toast.show{opacity:1}
 
-/* Leave requests */
 .leave-item{background:var(--bg3);border-radius:8px;padding:12px;margin-bottom:8px;border-left:3px solid var(--border)}
 .leave-item.pending{border-left-color:var(--warning)}
 .leave-item.approved{border-left-color:var(--success)}
@@ -143,13 +134,9 @@ input,select,textarea{font-family:inherit}
 .leave-status.approved{background:#dcfce7;color:var(--success)}
 .leave-status.rejected{background:#fee2e2;color:var(--danger)}
 
-/* View toggle */
 .view-toggle{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:10px;margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:0.85rem}
-.view-toggle button{margin-left:auto;font-size:0.8rem;padding:4px 10px}
-
-/* Settings */
 .settings-section{background:var(--bg3);border-radius:8px;padding:16px;margin-bottom:12px}
-.settings-section h3{font-size:0.95rem;font-weight:700;margin-bottom:12px;color:var(--text)}
+.settings-section h3{font-size:0.95rem;font-weight:700;margin-bottom:12px}
 </style>
 </head>
 <body>
@@ -158,7 +145,6 @@ input,select,textarea{font-family:inherit}
   <div style="color:var(--text2)">読み込み中...</div>
 </div>
 
-<!-- Auth Screen -->
 <div id="auth-screen" style="display:none">
   <div class="auth-card">
     <div class="auth-logo">
@@ -170,8 +156,6 @@ input,select,textarea{font-family:inherit}
       <button class="auth-tab active" onclick="switchAuthTab('login')" id="tab-login">ログイン</button>
       <button class="auth-tab" onclick="switchAuthTab('register')" id="tab-register">新規登録</button>
     </div>
-
-    <!-- Login Form -->
     <div id="login-form">
       <div style="margin-bottom:16px">
         <div style="font-size:0.85rem;font-weight:500;margin-bottom:8px;color:var(--text2)">ログイン先を選択</div>
@@ -186,20 +170,12 @@ input,select,textarea{font-family:inherit}
           </div>
         </div>
       </div>
-      <div class="form-group">
-        <label>メールアドレス</label>
-        <input type="email" id="login-email" placeholder="you@example.com">
-      </div>
-      <div class="form-group">
-        <label>パスワード</label>
-        <input type="password" id="login-pass" placeholder="••••••••">
-      </div>
+      <div class="form-group"><label>メールアドレス</label><input type="email" id="login-email" placeholder="you@example.com"></div>
+      <div class="form-group"><label>パスワード</label><input type="password" id="login-pass" placeholder="••••••••"></div>
       <button class="btn btn-primary btn-full" id="login-btn" onclick="doLogin()">管理者としてログイン</button>
       <div class="auth-msg error" id="login-error"></div>
       <div class="auth-msg success" id="login-success"></div>
     </div>
-
-    <!-- Register Form -->
     <div id="register-form" style="display:none">
       <div style="margin-bottom:16px">
         <div style="font-size:0.85rem;font-weight:500;margin-bottom:8px;color:var(--text2)">登録するロールを選択</div>
@@ -214,18 +190,9 @@ input,select,textarea{font-family:inherit}
           </div>
         </div>
       </div>
-      <div class="form-group">
-        <label>お名前</label>
-        <input type="text" id="reg-name" placeholder="山田 太郎">
-      </div>
-      <div class="form-group">
-        <label>メールアドレス</label>
-        <input type="email" id="reg-email" placeholder="you@example.com">
-      </div>
-      <div class="form-group">
-        <label>パスワード（6文字以上）</label>
-        <input type="password" id="reg-pass" placeholder="••••••••">
-      </div>
+      <div class="form-group"><label>お名前</label><input type="text" id="reg-name" placeholder="山田 太郎"></div>
+      <div class="form-group"><label>メールアドレス</label><input type="email" id="reg-email" placeholder="you@example.com"></div>
+      <div class="form-group"><label>パスワード（6文字以上）</label><input type="password" id="reg-pass" placeholder="••••••••"></div>
       <button class="btn btn-primary btn-full" id="reg-btn" onclick="doRegister()">従業員として登録</button>
       <div class="auth-msg error" id="reg-error"></div>
       <div class="auth-msg success" id="reg-success"></div>
@@ -233,43 +200,30 @@ input,select,textarea{font-family:inherit}
   </div>
 </div>
 
-<!-- App Screen -->
 <div id="app-screen" style="display:none;flex-direction:column;min-height:100vh">
-  <!-- Top bar -->
   <div class="topbar">
     <div class="topbar-logo">⬡ ShiftBoard</div>
     <div class="topbar-user">
       <span class="topbar-name" id="topbar-name"></span>
       <span class="topbar-role" id="topbar-role"></span>
-      <button class="btn btn-logout" onclick="doLogout()">ログアウト</button>
+      <button class="btn-logout" onclick="doLogout()">ログアウト</button>
     </div>
   </div>
-
-  <!-- Main content -->
   <div class="main-content" id="main-content">
-    <!-- View toggle (admin viewing as employee) -->
     <div class="view-toggle" id="view-toggle-bar" style="display:none">
       <span>👁️ 従業員ビューで閲覧中</span>
-      <button class="btn btn-ghost" onclick="exitEmployeeView()">管理者ビューに戻る</button>
+      <button class="btn btn-ghost" style="margin-left:auto;font-size:0.8rem;padding:4px 10px" onclick="exitEmployeeView()">管理者ビューに戻る</button>
     </div>
-
-    <!-- Pages rendered here -->
     <div id="page-content"></div>
   </div>
-
-  <!-- Bottom nav -->
-  <nav class="bottom-nav" id="bottom-nav">
-    <!-- rendered by JS -->
-  </nav>
+  <nav class="bottom-nav" id="bottom-nav"></nav>
 </div>
 
-<!-- Modals -->
 <div class="modal-overlay hidden" id="modal-overlay" onclick="closeModalOnOverlay(event)">
   <div class="modal" id="modal-box">
     <div id="modal-content"></div>
   </div>
 </div>
-
 <div id="toast"></div>
 
 <script>
@@ -282,78 +236,52 @@ let currentUser = null;
 let currentProfile = null;
 let currentPage = 'calendar';
 let currentMonth = new Date();
-let shifts = [];
-let applications = [];
-let members = [];
-let leaveRequests = [];
+let shifts = [], applications = [], members = [], leaveRequests = [];
 let selectedDate = null;
 let loginRole = 'host';
 let regRole = 'host';
-let isViewingAsEmployee = false; // admin viewing employee view
+let isViewingAsEmployee = false;
 
-// ==================== INIT ====================
 async function init() {
-  document.getElementById('loading-screen').style.display = 'flex';
-  document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('app-screen').style.display = 'none';
-
   const { data: { session } } = await sb.auth.getSession();
-  if (session) {
-    currentUser = session.user;
-    await loadUserAndShow();
-  } else {
-    document.getElementById('loading-screen').style.display = 'none';
-    showAuth();
-  }
-
+  document.getElementById('loading-screen').style.display = 'none';
+  if (session) { currentUser = session.user; await loadUserAndShow(); }
+  else { showAuth(); }
   sb.auth.onAuthStateChange(async (event, session) => {
-    if (event === 'SIGNED_IN' && session) {
-      currentUser = session.user;
-      await loadUserAndShow();
-    } else if (event === 'SIGNED_OUT') {
-      currentUser = null;
-      currentProfile = null;
-      showAuth();
-    }
+    if (event === 'SIGNED_IN' && session) { currentUser = session.user; await loadUserAndShow(); }
+    else if (event === 'SIGNED_OUT') { currentUser = null; currentProfile = null; showAuth(); }
   });
 }
 
 async function loadUserAndShow() {
   const { data: profile } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
   currentProfile = profile;
-  if (!profile) {
-    document.getElementById('loading-screen').style.display = 'none';
-    showAuth();
-    return;
-  }
-  document.getElementById('loading-screen').style.display = 'none';
+  if (!profile) { showAuth(); return; }
   showApp();
 }
 
-// ==================== AUTH ====================
 function showAuth() {
-  document.getElementById('loading-screen').style.display = 'none';
   document.getElementById('auth-screen').style.display = 'flex';
   document.getElementById('app-screen').style.display = 'none';
 }
 
 function showApp() {
   document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('app-screen').style.display = 'flex';
-  document.getElementById('app-screen').style.flexDirection = 'column';
-  document.getElementById('app-screen').style.minHeight = '100vh';
+  const app = document.getElementById('app-screen');
+  app.style.display = 'flex';
+  app.style.flexDirection = 'column';
+  app.style.minHeight = '100vh';
   updateTopbar();
   renderNav();
-  currentPage = currentProfile.role === 'host' ? 'calendar' : 'calendar';
   loadData().then(() => renderPage());
 }
 
 function updateTopbar() {
-  const effectiveRole = isViewingAsEmployee ? 'employee' : currentProfile.role;
   document.getElementById('topbar-name').textContent = currentProfile.name || '';
-  const roleBadge = document.getElementById('topbar-role');
-  roleBadge.textContent = isViewingAsEmployee ? 'VIEWING' : effectiveRole.toUpperCase();
-  roleBadge.className = 'topbar-role' + (isViewingAsEmployee ? ' viewing' : effectiveRole === 'employee' ? ' employee' : '');
+  const rb = document.getElementById('topbar-role');
+  if (isViewingAsEmployee) { rb.textContent = 'VIEWING'; rb.className = 'topbar-role viewing'; }
+  else if (currentProfile.role === 'host') { rb.textContent = 'HOST'; rb.className = 'topbar-role'; }
+  else { rb.textContent = 'STAFF'; rb.className = 'topbar-role employee'; }
 }
 
 function selectLoginRole(role) {
@@ -381,41 +309,31 @@ function switchAuthTab(tab) {
 function clearAuthMessages() {
   ['login-error','login-success','reg-error','reg-success'].forEach(id => {
     const el = document.getElementById(id);
-    if(el){ el.style.display='none'; el.textContent=''; }
+    if (el) { el.style.display = 'none'; el.textContent = ''; }
   });
 }
 
-function showAuthError(id, msg) {
-  const el = document.getElementById(id);
-  if(el){ el.textContent=msg; el.style.display='block'; }
-}
-function showAuthSuccess(id, msg) {
-  const el = document.getElementById(id);
-  if(el){ el.textContent=msg; el.style.display='block'; }
-}
+function showAuthError(id, msg) { const el = document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+function showAuthSuccess(id, msg) { const el = document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
 
 async function doLogin() {
   clearAuthMessages();
   const email = document.getElementById('login-email').value.trim();
   const pass = document.getElementById('login-pass').value;
   if (!email || !pass) { showAuthError('login-error','メールとパスワードを入力してください'); return; }
-  document.getElementById('login-btn').textContent = 'ログイン中...';
-  document.getElementById('login-btn').disabled = true;
+  const btn = document.getElementById('login-btn');
+  btn.textContent = 'ログイン中...'; btn.disabled = true;
   const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
-  document.getElementById('login-btn').disabled = false;
-  selectLoginRole(loginRole);
+  btn.disabled = false; selectLoginRole(loginRole);
   if (error) { showAuthError('login-error', error.message); return; }
-  // Check role
   const { data: profile } = await sb.from('profiles').select('*').eq('id', data.user.id).single();
   if (profile && loginRole === 'host' && profile.role !== 'host') {
     showAuthError('login-error','このアカウントは管理者ではありません');
-    await sb.auth.signOut();
-    return;
+    await sb.auth.signOut(); return;
   }
   if (profile && loginRole === 'employee' && profile.role === 'host') {
-    showAuthError('login-error','このアカウントは従業員ではありません。管理者でログインしてください。');
-    await sb.auth.signOut();
-    return;
+    showAuthError('login-error','管理者アカウントです。管理者でログインしてください。');
+    await sb.auth.signOut(); return;
   }
 }
 
@@ -426,11 +344,10 @@ async function doRegister() {
   const pass = document.getElementById('reg-pass').value;
   if (!name || !email || !pass) { showAuthError('reg-error','全項目を入力してください'); return; }
   if (pass.length < 6) { showAuthError('reg-error','パスワードは6文字以上です'); return; }
-  document.getElementById('reg-btn').textContent = '登録中...';
-  document.getElementById('reg-btn').disabled = true;
+  const btn = document.getElementById('reg-btn');
+  btn.textContent = '登録中...'; btn.disabled = true;
   const { data, error } = await sb.auth.signUp({ email, password: pass });
-  document.getElementById('reg-btn').disabled = false;
-  selectRegRole(regRole);
+  btn.disabled = false; selectRegRole(regRole);
   if (error) { showAuthError('reg-error', error.message); return; }
   if (data.user) {
     await sb.from('profiles').upsert({ id: data.user.id, email, name, role: regRole });
@@ -439,12 +356,8 @@ async function doRegister() {
   }
 }
 
-async function doLogout() {
-  isViewingAsEmployee = false;
-  await sb.auth.signOut();
-}
+async function doLogout() { isViewingAsEmployee = false; await sb.auth.signOut(); }
 
-// ==================== DATA ====================
 async function loadData() {
   await Promise.all([loadShifts(), loadApplications(), loadMembers(), loadLeaveRequests()]);
 }
@@ -469,63 +382,34 @@ async function loadMembers() {
 async function loadLeaveRequests() {
   try {
     if (currentProfile.role === 'host') {
-      const { data, error } = await sb.from('leave_requests').select('*, profiles(name,email)').order('created_at', {ascending:false});
+      const { data, error } = await sb.from('leave_requests').select('*, profiles(name,email)').order('created_at',{ascending:false});
       if (!error) leaveRequests = data || [];
     } else {
-      const { data, error } = await sb.from('leave_requests').select('*').eq('user_id', currentUser.id).order('created_at', {ascending:false});
+      const { data, error } = await sb.from('leave_requests').select('*').eq('user_id', currentUser.id).order('created_at',{ascending:false});
       if (!error) leaveRequests = data || [];
     }
-  } catch(e) {
-    console.warn('leave_requests table not found. Please create it in Supabase.');
-    leaveRequests = [];
-  }
+  } catch(e) { leaveRequests = []; }
 }
 
-// ==================== NAVIGATION ====================
 function renderNav() {
   const nav = document.getElementById('bottom-nav');
-  const isHost = currentProfile.role === 'host';
-  const effectiveIsEmployee = isViewingAsEmployee || currentProfile.role === 'employee';
-
-  if (isHost && !isViewingAsEmployee) {
+  const isHost = currentProfile.role === 'host' && !isViewingAsEmployee;
+  if (isHost) {
     nav.innerHTML = `
-      <button class="nav-btn ${currentPage==='calendar'?'active':''}" onclick="switchPage('calendar')">
-        <span class="nav-icon">📅</span><span>カレンダー</span>
-      </button>
-      <button class="nav-btn ${currentPage==='shifts'?'active':''}" onclick="switchPage('shifts')">
-        <span class="nav-icon">📋</span><span>シフト管理</span>
-      </button>
-      <button class="nav-btn ${currentPage==='members'?'active':''}" onclick="switchPage('members')">
-        <span class="nav-icon">👥</span><span>スタッフ</span>
-      </button>
-      <button class="nav-btn ${currentPage==='leave_admin'?'active':''}" onclick="switchPage('leave_admin')">
-        <span class="nav-icon">📝</span><span>申請管理</span>
-      </button>
-      <button class="nav-btn ${currentPage==='share'?'active':''}" onclick="switchPage('share')">
-        <span class="nav-icon">🔗</span><span>配布</span>
-      </button>
-      <button class="nav-btn ${currentPage==='settings'?'active':''}" onclick="switchPage('settings')">
-        <span class="nav-icon">⚙️</span><span>設定</span>
-      </button>
+      <button class="nav-btn ${currentPage==='calendar'?'active':''}" onclick="switchPage('calendar')"><span class="nav-icon">📅</span><span>カレンダー</span></button>
+      <button class="nav-btn ${currentPage==='shifts'?'active':''}" onclick="switchPage('shifts')"><span class="nav-icon">📋</span><span>シフト管理</span></button>
+      <button class="nav-btn ${currentPage==='members'?'active':''}" onclick="switchPage('members')"><span class="nav-icon">👥</span><span>スタッフ</span></button>
+      <button class="nav-btn ${currentPage==='leave_admin'?'active':''}" onclick="switchPage('leave_admin')"><span class="nav-icon">📝</span><span>申請管理</span></button>
+      <button class="nav-btn ${currentPage==='share'?'active':''}" onclick="switchPage('share')"><span class="nav-icon">🔗</span><span>配布</span></button>
+      <button class="nav-btn ${currentPage==='settings'?'active':''}" onclick="switchPage('settings')"><span class="nav-icon">⚙️</span><span>設定</span></button>
     `;
   } else {
     nav.innerHTML = `
-      <button class="nav-btn ${currentPage==='calendar'?'active':''}" onclick="switchPage('calendar')">
-        <span class="nav-icon">📅</span><span>カレンダー</span>
-      </button>
-      <button class="nav-btn ${currentPage==='my_shifts'?'active':''}" onclick="switchPage('my_shifts')">
-        <span class="nav-icon">🗓️</span><span>マイシフト</span>
-      </button>
-      <button class="nav-btn ${currentPage==='apply'?'active':''}" onclick="switchPage('apply')">
-        <span class="nav-icon">✋</span><span>希望提出</span>
-      </button>
-      <button class="nav-btn ${currentPage==='leave'?'active':''}" onclick="switchPage('leave')">
-        <span class="nav-icon">🌿</span><span>休暇申請</span>
-      </button>
-      ${(!isViewingAsEmployee && isHost) ? '' : ''}
-      <button class="nav-btn ${currentPage==='settings'?'active':''}" onclick="switchPage('settings')">
-        <span class="nav-icon">⚙️</span><span>設定</span>
-      </button>
+      <button class="nav-btn ${currentPage==='calendar'?'active':''}" onclick="switchPage('calendar')"><span class="nav-icon">📅</span><span>カレンダー</span></button>
+      <button class="nav-btn ${currentPage==='my_shifts'?'active':''}" onclick="switchPage('my_shifts')"><span class="nav-icon">🗓️</span><span>マイシフト</span></button>
+      <button class="nav-btn ${currentPage==='apply'?'active':''}" onclick="switchPage('apply')"><span class="nav-icon">✋</span><span>希望提出</span></button>
+      <button class="nav-btn ${currentPage==='leave'?'active':''}" onclick="switchPage('leave')"><span class="nav-icon">🌿</span><span>休暇申請</span></button>
+      <button class="nav-btn ${currentPage==='settings'?'active':''}" onclick="switchPage('settings')"><span class="nav-icon">⚙️</span><span>設定</span></button>
     `;
   }
 }
@@ -538,392 +422,217 @@ function switchPage(page) {
 
 function renderPage() {
   document.getElementById('view-toggle-bar').style.display = isViewingAsEmployee ? 'flex' : 'none';
-  const content = document.getElementById('page-content');
-  switch(currentPage) {
-    case 'calendar': content.innerHTML = renderCalendarPage(); break;
-    case 'shifts': content.innerHTML = renderShiftsPage(); break;
-    case 'members': content.innerHTML = renderMembersPage(); break;
-    case 'my_shifts': content.innerHTML = renderMyShiftsPage(); break;
-    case 'apply': content.innerHTML = renderApplyPage(); break;
-    case 'leave': content.innerHTML = renderLeavePage(); break;
-    case 'leave_admin': content.innerHTML = renderLeaveAdminPage(); break;
-    case 'share': content.innerHTML = renderSharePage(); break;
-    case 'settings': content.innerHTML = renderSettingsPage(); break;
-    default: content.innerHTML = renderCalendarPage();
-  }
+  const c = document.getElementById('page-content');
+  const map = {
+    calendar: renderCalendarPage,
+    shifts: renderShiftsPage,
+    members: renderMembersPage,
+    my_shifts: renderMyShiftsPage,
+    apply: renderApplyPage,
+    leave: renderLeavePage,
+    leave_admin: renderLeaveAdminPage,
+    share: renderSharePage,
+    settings: renderSettingsPage
+  };
+  c.innerHTML = (map[currentPage] || renderCalendarPage)();
 }
 
-// Admin view as employee
-function viewAsEmployee() {
-  isViewingAsEmployee = true;
-  currentPage = 'calendar';
-  updateTopbar();
-  renderNav();
-  renderPage();
-}
+function viewAsEmployee() { isViewingAsEmployee = true; currentPage = 'calendar'; updateTopbar(); renderNav(); renderPage(); }
+function exitEmployeeView() { isViewingAsEmployee = false; currentPage = 'calendar'; updateTopbar(); renderNav(); renderPage(); }
 
-function exitEmployeeView() {
-  isViewingAsEmployee = false;
-  currentPage = 'calendar';
-  updateTopbar();
-  renderNav();
-  renderPage();
-}
-
-// ==================== CALENDAR PAGE ====================
 function renderCalendarPage() {
-  const year = currentMonth.getFullYear();
-  const month = currentMonth.getMonth();
+  const year = currentMonth.getFullYear(), month = currentMonth.getMonth();
   const isHost = currentProfile.role === 'host' && !isViewingAsEmployee;
-  
   const firstDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
   const today = new Date();
-  
-  let calCells = '';
-  const headers = ['日','月','火','水','木','金','土'].map(d => `<div class="cal-head">${d}</div>`).join('');
-  
-  for (let i = 0; i < firstDay; i++) {
-    const prevDate = new Date(year, month, -firstDay + i + 1);
-    calCells += `<div class="cal-day other-month">${prevDate.getDate()}</div>`;
+  const headers = ['日','月','火','水','木','金','土'].map(d=>`<div class="cal-head">${d}</div>`).join('');
+  let cells = '';
+  for (let i=0; i<firstDay; i++) {
+    const d = new Date(year, month, -firstDay+i+1);
+    cells += `<div class="cal-day other-month">${d.getDate()}</div>`;
   }
-  
-  for (let d = 1; d <= daysInMonth; d++) {
-    const dateStr = toDateStr(new Date(year, month, d));
-    const dayShifts = shifts.filter(s => s.date === dateStr);
+  for (let d=1; d<=daysInMonth; d++) {
+    const ds = toDateStr(new Date(year,month,d));
+    const dayShifts = shifts.filter(s=>s.date===ds);
     const isToday = today.getFullYear()===year && today.getMonth()===month && today.getDate()===d;
-    const isSelected = selectedDate === dateStr;
-    const dow = new Date(year, month, d).getDay();
-    const classes = ['cal-day', isToday?'today':'', isSelected?'selected':'', dow===0?'sunday':dow===6?'saturday':''].filter(Boolean).join(' ');
+    const isSel = selectedDate===ds;
+    const dow = new Date(year,month,d).getDay();
+    const cls = ['cal-day', isToday?'today':'', isSel?'selected':'', dow===0?'sunday':dow===6?'saturday':''].filter(Boolean).join(' ');
     const dots = dayShifts.slice(0,3).map(()=>`<div class="dot"></div>`).join('');
-    calCells += `<div class="${classes}" onclick="selectDay('${dateStr}')">${d}${dots?'<div style=\"display:flex;gap:2px\">'+dots+'</div>':''}</div>`;
+    cells += `<div class="${cls}" onclick="selectDay('${ds}')">${d}${dots?`<div style="display:flex;gap:2px">${dots}</div>`:''}</div>`;
   }
-  
-  const remaining = (firstDay + daysInMonth) % 7;
-  if (remaining > 0) {
-    for (let i = 1; i <= 7 - remaining; i++) {
-      calCells += `<div class="cal-day other-month">${i}</div>`;
-    }
-  }
-  
-  let selectedShifts = '';
+  const rem = (firstDay+daysInMonth)%7;
+  if (rem>0) for(let i=1;i<=7-rem;i++) cells+=`<div class="cal-day other-month">${i}</div>`;
+
+  let selSection = '';
   if (selectedDate) {
-    const dayShifts = shifts.filter(s => s.date === selectedDate);
-    if (dayShifts.length > 0) {
-      selectedShifts = dayShifts.map(s => {
-        const applied = applications.some(a => a.shift_id === s.id && a.user_id === currentUser.id);
-        const count = applications.filter(a => a.shift_id === s.id).length;
-        return `<div class="shift-item" onclick="openShiftDetail('${s.id}')">
-          <div class="shift-title">${s.title || '無題'}</div>
-          <div class="shift-time">${s.start_time}〜${s.end_time}</div>
-          <div class="shift-count">応募 ${count}/${s.required_count || 1}人</div>
-          ${applied ? '<span class="shift-badge applied">応募済</span>' : (count >= (s.required_count||1) ? '<span class="shift-badge full">満員</span>' : '')}
-        </div>`;
-      }).join('');
-    } else {
-      selectedShifts = '<div style="color:var(--text3);text-align:center;padding:20px">この日のシフトはありません</div>';
-    }
+    const ds = shifts.filter(s=>s.date===selectedDate);
+    const items = ds.length ? ds.map(s=>{
+      const applied = applications.some(a=>a.shift_id===s.id&&a.user_id===currentUser.id);
+      const cnt = applications.filter(a=>a.shift_id===s.id).length;
+      return `<div class="shift-item" onclick="openShiftDetail('${s.id}')">
+        <div class="shift-title">${s.title||'無題'}</div>
+        <div class="shift-time">${s.start_time}〜${s.end_time}</div>
+        <div class="shift-count">応募 ${cnt}/${s.needed_count||1}人</div>
+        ${applied?'<span class="shift-badge applied">応募済</span>':(cnt>=(s.needed_count||1)?'<span class="shift-badge full">満員</span>':'')}
+      </div>`;
+    }).join('') : '<div style="color:var(--text3);text-align:center;padding:20px">この日のシフトはありません</div>';
+    selSection = `<div class="card"><div class="card-header"><div class="card-title">${selectedDate} のシフト</div>${isHost?`<button class="btn btn-primary" style="padding:6px 14px;font-size:0.85rem" onclick="openAddShiftModal()">＋ 追加</button>`:''}</div><div class="card-body">${items}</div></div>`;
   }
-  
-  return `
-    <div class="card">
-      <div class="card-body">
-        <div class="cal-nav">
-          <button class="btn btn-ghost" onclick="changeMonth(-1)" style="padding:6px 12px">‹</button>
-          <div class="cal-month">${year}年 ${month+1}月</div>
-          <button class="btn btn-ghost" onclick="changeMonth(1)" style="padding:6px 12px">›</button>
-        </div>
-        <div class="cal-grid">${headers}${calCells}</div>
-      </div>
-    </div>
-    ${selectedDate ? `
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">${selectedDate} のシフト</div>
-        ${isHost ? `<button class="btn btn-primary" style="padding:6px 14px;font-size:0.85rem" onclick="openAddShiftModal()">＋ 追加</button>` : ''}
-      </div>
-      <div class="card-body">${selectedShifts}</div>
-    </div>
-    ` : ''}
-  `;
+  return `<div class="card"><div class="card-body"><div class="cal-nav"><button class="btn btn-ghost" onclick="changeMonth(-1)" style="padding:6px 12px">‹</button><div class="cal-month">${year}年 ${month+1}月</div><button class="btn btn-ghost" onclick="changeMonth(1)" style="padding:6px 12px">›</button></div><div class="cal-grid">${headers}${cells}</div></div></div>${selSection}`;
 }
 
-function changeMonth(delta) {
-  currentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + delta, 1);
-  renderPage();
-}
+function changeMonth(d) { currentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth()+d, 1); renderPage(); }
+function selectDay(ds) { selectedDate = selectedDate===ds ? null : ds; renderPage(); }
 
-function selectDay(dateStr) {
-  selectedDate = selectedDate === dateStr ? null : dateStr;
-  renderPage();
-}
-
-// ==================== SHIFTS PAGE (admin) ====================
 function renderShiftsPage() {
-  const sorted = [...shifts].sort((a,b) => (a.date+a.start_time).localeCompare(b.date+b.start_time));
-  const items = sorted.map(s => {
-    const count = applications.filter(a => a.shift_id === s.id).length;
+  const sorted = [...shifts].sort((a,b)=>(a.date+a.start_time).localeCompare(b.date+b.start_time));
+  const items = sorted.map(s=>{
+    const cnt = applications.filter(a=>a.shift_id===s.id).length;
     return `<div class="shift-item" onclick="openShiftDetail('${s.id}')">
-      <div class="shift-title">${s.title || '無題'} <span style="color:var(--text3);font-size:0.82rem">${s.date}</span></div>
+      <div class="shift-title">${s.title||'無題'} <span style="color:var(--text3);font-size:0.82rem">${s.date}</span></div>
       <div class="shift-time">${s.start_time}〜${s.end_time}</div>
-      <div class="shift-count">応募 ${count}/${s.required_count||1}人</div>
+      <div class="shift-count">応募 ${cnt}/${s.needed_count||1}人</div>
     </div>`;
   }).join('');
-  
-  return `
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">シフト一覧</div>
-        <button class="btn btn-primary" style="padding:6px 14px;font-size:0.85rem" onclick="openAddShiftModal()">＋ シフト追加</button>
-      </div>
-      <div class="card-body">
-        ${items || '<div style="color:var(--text3);text-align:center;padding:20px">シフトがありません</div>'}
-      </div>
-    </div>
-  `;
+  return `<div class="card"><div class="card-header"><div class="card-title">シフト一覧</div><button class="btn btn-primary" style="padding:6px 14px;font-size:0.85rem" onclick="openAddShiftModal()">＋ シフト追加</button></div><div class="card-body">${items||'<div style="color:var(--text3);text-align:center;padding:20px">シフトがありません</div>'}</div></div>`;
 }
 
-// ==================== MEMBERS PAGE (admin) ====================
 function renderMembersPage() {
-  const rows = members.map(m => `
-    <tr>
-      <td>${m.name || '-'}</td>
-      <td style="font-size:0.8rem;color:var(--text2)">${m.email || '-'}</td>
-      <td><span class="role-badge ${m.role}">${m.role === 'host' ? '管理者' : '従業員'}</span></td>
-      <td style="display:flex;gap:4px;flex-wrap:wrap">
-        <button class="btn btn-ghost" style="font-size:0.78rem;padding:4px 8px" onclick="toggleRole('${m.id}','${m.role}')">
-          ${m.role === 'host' ? '従業員に変更' : '管理者に変更'}
-        </button>
-        <button class="btn btn-primary" style="font-size:0.78rem;padding:4px 8px;background:var(--info)" onclick="viewMemberAsEmployee('${m.id}')">
-          従業員ビュー
-        </button>
-      </td>
-    </tr>
-  `).join('');
-  
-  return `
-    <div class="card">
-      <div class="card-header"><div class="card-title">スタッフ一覧</div></div>
-      <div class="card-body" style="padding:0;overflow-x:auto">
-        <table class="members-table">
-          <thead><tr><th>名前</th><th>メール</th><th>ロール</th><th>操作</th></tr></thead>
-          <tbody>${rows || '<tr><td colspan="4" style="text-align:center;color:var(--text3)">スタッフがいません</td></tr>'}</tbody>
-        </table>
-      </div>
-    </div>
-  `;
+  const rows = members.map(m=>`<tr>
+    <td>${m.name||'-'}</td>
+    <td style="font-size:0.8rem;color:var(--text2)">${m.email||'-'}</td>
+    <td><span class="role-badge ${m.role}">${m.role==='host'?'管理者':'従業員'}</span></td>
+    <td style="display:flex;gap:4px;flex-wrap:wrap">
+      <button class="btn btn-ghost" style="font-size:0.78rem;padding:4px 8px" onclick="toggleRole('${m.id}','${m.role}')">${m.role==='host'?'従業員に変更':'管理者に変更'}</button>
+      <button class="btn btn-primary" style="font-size:0.78rem;padding:4px 8px;background:var(--info)" onclick="viewAsEmployee()">従業員ビュー</button>
+    </td>
+  </tr>`).join('');
+  return `<div class="card"><div class="card-header"><div class="card-title">スタッフ一覧</div></div><div class="card-body" style="padding:0;overflow-x:auto"><table class="members-table"><thead><tr><th>名前</th><th>メール</th><th>ロール</th><th>操作</th></tr></thead><tbody>${rows||'<tr><td colspan="4" style="text-align:center;color:var(--text3)">スタッフがいません</td></tr>'}</tbody></table></div></div>`;
 }
 
-// ==================== MY SHIFTS PAGE (employee) ====================
 function renderMyShiftsPage() {
-  const myApps = applications.filter(a => a.user_id === currentUser.id);
-  const myShifts = myApps.map(a => shifts.find(s => s.id === a.shift_id)).filter(Boolean);
-  const sorted = [...myShifts].sort((a,b) => (a.date+a.start_time).localeCompare(b.date+b.start_time));
-  
-  const items = sorted.map(s => `
-    <div class="shift-item">
-      <div class="shift-title">${s.title || '無題'} <span style="color:var(--text3);font-size:0.82rem">${s.date}</span></div>
-      <div class="shift-time">${s.start_time}〜${s.end_time}</div>
-      ${s.memo ? `<div style="font-size:0.82rem;color:var(--text2);margin-top:4px">${s.memo}</div>` : ''}
-    </div>
-  `).join('');
-  
-  return `
-    <div class="card">
-      <div class="card-header"><div class="card-title">マイシフト</div></div>
-      <div class="card-body">
-        ${items || '<div style="color:var(--text3);text-align:center;padding:20px">応募済みのシフトはありません</div>'}
-      </div>
-    </div>
-  `;
+  const myApps = applications.filter(a=>a.user_id===currentUser.id);
+  const myShifts = myApps.map(a=>shifts.find(s=>s.id===a.shift_id)).filter(Boolean);
+  const sorted = [...myShifts].sort((a,b)=>(a.date+a.start_time).localeCompare(b.date+b.start_time));
+  const items = sorted.map(s=>`<div class="shift-item">
+    <div class="shift-title">${s.title||'無題'} <span style="color:var(--text3);font-size:0.82rem">${s.date}</span></div>
+    <div class="shift-time">${s.start_time}〜${s.end_time}</div>
+    ${s.note?'<div style="font-size:0.82rem;color:var(--text2);margin-top:4px">'+s.note+'</div>':''}
+  </div>`).join('');
+  return `<div class="card"><div class="card-header"><div class="card-title">マイシフト</div></div><div class="card-body">${items||'<div style="color:var(--text3);text-align:center;padding:20px">応募済みシフトはありません</div>'}</div></div>`;
 }
 
-// ==================== APPLY PAGE (employee) ====================
 function renderApplyPage() {
-  const upcoming = shifts.filter(s => s.date >= toDateStr(new Date()));
-  const sorted = [...upcoming].sort((a,b) => (a.date+a.start_time).localeCompare(b.date+b.start_time));
-  
-  const items = sorted.map(s => {
-    const applied = applications.some(a => a.shift_id === s.id && a.user_id === currentUser.id);
-    const count = applications.filter(a => a.shift_id === s.id).length;
-    const isFull = count >= (s.required_count || 1) && !applied;
+  const today = toDateStr(new Date());
+  const upcoming = [...shifts].filter(s=>s.date>=today).sort((a,b)=>(a.date+a.start_time).localeCompare(b.date+b.start_time));
+  const items = upcoming.map(s=>{
+    const applied = applications.some(a=>a.shift_id===s.id&&a.user_id===currentUser.id);
+    const cnt = applications.filter(a=>a.shift_id===s.id).length;
+    const full = cnt>=(s.needed_count||1)&&!applied;
     return `<div class="shift-item" onclick="openShiftDetail('${s.id}')">
-      <div class="shift-title">${s.title || '無題'} <span style="color:var(--text3);font-size:0.82rem">${s.date}</span></div>
+      <div class="shift-title">${s.title||'無題'} <span style="color:var(--text3);font-size:0.82rem">${s.date}</span></div>
       <div class="shift-time">${s.start_time}〜${s.end_time}</div>
-      <div class="shift-count">応募 ${count}/${s.required_count||1}人</div>
-      ${applied ? '<span class="shift-badge applied">応募済</span>' : isFull ? '<span class="shift-badge full">満員</span>' : ''}
+      <div class="shift-count">応募 ${cnt}/${s.needed_count||1}人</div>
+      ${applied?'<span class="shift-badge applied">応募済</span>':full?'<span class="shift-badge full">満員</span>':''}
     </div>`;
   }).join('');
-  
-  return `
-    <div class="card">
-      <div class="card-header"><div class="card-title">シフト希望を提出</div></div>
-      <div class="card-body">
-        ${items || '<div style="color:var(--text3);text-align:center;padding:20px">応募できるシフトはありません</div>'}
-      </div>
-    </div>
-  `;
+  return `<div class="card"><div class="card-header"><div class="card-title">シフト希望を提出</div></div><div class="card-body">${items||'<div style="color:var(--text3);text-align:center;padding:20px">応募できるシフトはありません</div>'}</div></div>`;
 }
 
-// ==================== LEAVE PAGE (employee) ====================
 function renderLeavePage() {
-  const items = leaveRequests.map(r => `
-    <div class="leave-item ${r.status}">
-      <div><span class="leave-status ${r.status}">${r.status==='pending'?'審査中':r.status==='approved'?'承認済':'却下'}</span></div>
-      <div style="font-weight:600">${r.leave_type}</div>
-      <div style="font-size:0.85rem;color:var(--text2)">${r.start_date} 〜 ${r.end_date}</div>
-      <div style="font-size:0.82rem;margin-top:4px">${r.reason || ''}</div>
-      ${r.admin_note ? `<div style="font-size:0.8rem;color:var(--text2);margin-top:4px;padding:6px;background:var(--bg3);border-radius:4px">管理者メモ: ${r.admin_note}</div>` : ''}
-    </div>
-  `).join('');
-  
-  return `
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">休暇・有給申請</div>
-        <button class="btn btn-primary" style="padding:6px 14px;font-size:0.85rem" onclick="openLeaveRequestModal()">＋ 申請</button>
-      </div>
-      <div class="card-body">
-        ${items || '<div style="color:var(--text3);text-align:center;padding:20px">申請履歴はありません</div>'}
-      </div>
-    </div>
-  `;
+  const items = leaveRequests.map(r=>`<div class="leave-item ${r.status}">
+    <span class="leave-status ${r.status}">${r.status==='pending'?'審査中':r.status==='approved'?'承認済':'却下'}</span>
+    <div style="font-weight:600">${r.type}</div>
+    <div style="font-size:0.85rem;color:var(--text2)">${r.start_date} 〜 ${r.end_date}</div>
+    ${r.reason?'<div style="font-size:0.82rem;margin-top:4px">'+r.reason+'</div>':''}
+  </div>`).join('');
+  return `<div class="card"><div class="card-header"><div class="card-title">休暇・有給申請</div><button class="btn btn-primary" style="padding:6px 14px;font-size:0.85rem" onclick="openLeaveRequestModal()">＋ 申請</button></div><div class="card-body">${items||'<div style="color:var(--text3);text-align:center;padding:20px">申請履歴はありません</div>'}</div></div>`;
 }
 
-// ==================== LEAVE ADMIN PAGE ====================
 function renderLeaveAdminPage() {
-  const pending = leaveRequests.filter(r => r.status === 'pending');
-  const others = leaveRequests.filter(r => r.status !== 'pending');
-  
-  const renderItem = (r) => `
-    <div class="leave-item ${r.status}">
-      <div style="display:flex;align-items:center;justify-content:space-between">
-        <div><span class="leave-status ${r.status}">${r.status==='pending'?'審査中':r.status==='approved'?'承認済':'却下'}</span></div>
-        ${r.status === 'pending' ? `
-          <div style="display:flex;gap:4px">
-            <button class="btn btn-success" style="font-size:0.78rem;padding:4px 10px" onclick="processLeave('${r.id}','approved')">承認</button>
-            <button class="btn btn-danger" style="font-size:0.78rem;padding:4px 10px" onclick="processLeave('${r.id}','rejected')">却下</button>
-          </div>
-        ` : ''}
-      </div>
-      <div style="font-weight:600">${r.profiles?.name || '-'} - ${r.leave_type}</div>
-      <div style="font-size:0.82rem;color:var(--text2)">${r.start_date} 〜 ${r.end_date}</div>
-      <div style="font-size:0.82rem;margin-top:4px">${r.reason || ''}</div>
+  const pending = leaveRequests.filter(r=>r.status==='pending');
+  const others = leaveRequests.filter(r=>r.status!=='pending');
+  const item = r => `<div class="leave-item ${r.status}">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <span class="leave-status ${r.status}">${r.status==='pending'?'審査中':r.status==='approved'?'承認済':'却下'}</span>
+      ${r.status==='pending'?`<div style="display:flex;gap:4px"><button class="btn btn-success" style="font-size:0.78rem;padding:4px 10px" onclick="processLeave('${r.id}','approved')">承認</button><button class="btn btn-danger" style="font-size:0.78rem;padding:4px 10px" onclick="processLeave('${r.id}','rejected')">却下</button></div>`:''}
     </div>
-  `;
-  
-  return `
-    <div class="card">
-      <div class="card-header"><div class="card-title">申請管理</div></div>
-      <div class="card-body">
-        ${pending.length > 0 ? '<div style="font-weight:600;margin-bottom:8px;color:var(--warning)">⏳ 審査待ち (' + pending.length + '件)</div>' + pending.map(renderItem).join('') : ''}
-        ${others.length > 0 ? '<div style="font-weight:600;margin:12px 0 8px;color:var(--text2)">処理済み</div>' + others.map(renderItem).join('') : ''}
-        ${leaveRequests.length === 0 ? '<div style="color:var(--text3);text-align:center;padding:20px">申請はありません</div>' : ''}
-      </div>
-    </div>
-  `;
+    <div style="font-weight:600">${r.profiles?.name||'-'} - ${r.type}</div>
+    <div style="font-size:0.82rem;color:var(--text2)">${r.start_date} 〜 ${r.end_date}</div>
+    ${r.reason?'<div style="font-size:0.82rem;margin-top:4px">'+r.reason+'</div>':''}
+  </div>`;
+  let html = '';
+  if (pending.length) html += '<div style="font-weight:600;margin-bottom:8px;color:var(--warning)">⏳ 審査待ち ('+pending.length+'件)</div>'+pending.map(item).join('');
+  if (others.length) html += '<div style="font-weight:600;margin:12px 0 8px;color:var(--text2)">処理済み</div>'+others.map(item).join('');
+  if (!leaveRequests.length) html = '<div style="color:var(--text3);text-align:center;padding:20px">申請はありません</div>';
+  return `<div class="card"><div class="card-header"><div class="card-title">申請管理</div></div><div class="card-body">${html}</div></div>`;
 }
 
-// ==================== SHARE PAGE ====================
 function renderSharePage() {
-  const appUrl = 'https://etsu1617.github.io/shiftboard/';
-  return `
-    <div class="card">
-      <div class="card-header"><div class="card-title">アプリを配布</div></div>
-      <div class="card-body">
-        <div style="margin-bottom:16px">
-          <div style="font-size:0.9rem;font-weight:600;margin-bottom:8px">アプリURL</div>
-          <div style="background:var(--bg3);border-radius:8px;padding:10px;font-family:'DM Mono',monospace;font-size:0.82rem;word-break:break-all">${appUrl}</div>
-          <div style="display:flex;gap:8px;margin-top:8px">
-            <button class="btn btn-primary" onclick="copyAppUrl()" style="font-size:0.85rem;padding:8px 16px">URLをコピー</button>
-            <button class="btn btn-ghost" onclick="window.open('${appUrl}','_blank')" style="font-size:0.85rem;padding:8px 16px">URLを開く</button>
-          </div>
-        </div>
-        <div>
-          <div style="font-size:0.9rem;font-weight:600;margin-bottom:8px">QRコード</div>
-          <div style="text-align:center;padding:16px">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(appUrl)}" style="border-radius:8px" alt="QR">
-            <div style="font-size:0.82rem;color:var(--text2);margin-top:8px">スマホのカメラで読み取るとアプリを開けます</div>
-          </div>
-        </div>
-        <div style="background:var(--bg3);border-radius:8px;padding:12px;margin-top:8px">
-          <div style="font-weight:600;margin-bottom:8px">使い方</div>
-          <div style="font-size:0.85rem;line-height:1.8">
-            <div>1. QRコードを印刷・共有</div>
-            <div>2. スタッフがQRを読み取る</div>
-            <div>3. 「従業員」でアカウント作成</div>
-          </div>
-        </div>
+  const url = 'https://etsu1617.github.io/shiftboard/';
+  return `<div class="card"><div class="card-header"><div class="card-title">アプリを配布</div></div><div class="card-body">
+    <div style="margin-bottom:16px">
+      <div style="font-size:0.9rem;font-weight:600;margin-bottom:8px">アプリURL</div>
+      <div style="background:var(--bg3);border-radius:8px;padding:10px;font-family:'DM Mono',monospace;font-size:0.82rem;word-break:break-all">${url}</div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn btn-primary" onclick="copyAppUrl()" style="font-size:0.85rem;padding:8px 16px">URLをコピー</button>
+        <button class="btn btn-ghost" onclick="window.open('${url}','_blank')" style="font-size:0.85rem;padding:8px 16px">URLを開く</button>
       </div>
     </div>
-  `;
+    <div>
+      <div style="font-size:0.9rem;font-weight:600;margin-bottom:8px">QRコード</div>
+      <div style="text-align:center;padding:16px">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}" style="border-radius:8px" alt="QR">
+        <div style="font-size:0.82rem;color:var(--text2);margin-top:8px">スマホのカメラで読み取るとアプリを開けます</div>
+      </div>
+    </div>
+    <div style="background:var(--bg3);border-radius:8px;padding:12px">
+      <div style="font-weight:600;margin-bottom:8px">使い方</div>
+      <div style="font-size:0.85rem;line-height:1.8"><div>1. QRコードを印刷・共有</div><div>2. スタッフがQRを読み取る</div><div>3. 「従業員」でアカウント作成</div></div>
+    </div>
+  </div></div>`;
 }
 
-function copyAppUrl() {
-  navigator.clipboard.writeText('https://etsu1617.github.io/shiftboard/').then(() => toast('URLをコピーしました'));
-}
+function copyAppUrl() { navigator.clipboard.writeText('https://etsu1617.github.io/shiftboard/').then(()=>toast('URLをコピーしました')); }
 
-// ==================== SETTINGS PAGE ====================
 function renderSettingsPage() {
-  return `
-    <div class="card">
-      <div class="card-header"><div class="card-title">設定</div></div>
-      <div class="card-body">
-        
-        <div class="settings-section">
-          <h3>👤 プロフィール変更</h3>
-          <div class="form-group">
-            <label>お名前</label>
-            <input type="text" id="set-name" value="${currentProfile.name || ''}">
-          </div>
-          <button class="btn btn-primary btn-full" onclick="updateProfile()">名前を更新</button>
-        </div>
-
-        <div class="settings-section">
-          <h3>✉️ メールアドレス変更</h3>
-          <div class="form-group">
-            <label>新しいメールアドレス</label>
-            <input type="email" id="set-email" placeholder="new@example.com">
-          </div>
-          <button class="btn btn-primary btn-full" onclick="updateEmail()">メールを変更</button>
-          <div style="font-size:0.78rem;color:var(--text2);margin-top:6px">※確認メールが届きます</div>
-        </div>
-
-        <div class="settings-section">
-          <h3>🔒 パスワード変更</h3>
-          <div class="form-group">
-            <label>新しいパスワード（6文字以上）</label>
-            <input type="password" id="set-pass" placeholder="新しいパスワード">
-          </div>
-          <div class="form-group">
-            <label>確認用パスワード</label>
-            <input type="password" id="set-pass2" placeholder="もう一度入力">
-          </div>
-          <button class="btn btn-primary btn-full" onclick="updatePassword()">パスワードを変更</button>
-        </div>
-
-        ${currentProfile.role === 'host' ? `
-        <div class="settings-section" style="border:2px solid var(--info);background:#eff6ff">
-          <h3>👁️ 従業員ビュー（管理者専用）</h3>
-          <p style="font-size:0.85rem;color:var(--text2);margin-bottom:12px">従業員目線でアプリを確認できます</p>
-          <button class="btn btn-primary btn-full" style="background:var(--info)" onclick="viewAsEmployee()">従業員ビューで見る</button>
-        </div>
-        ` : ''}
-
-        <div class="settings-section">
-          <h3>🚪 ログアウト</h3>
-          <button class="btn btn-danger btn-full" onclick="doLogout()">ログアウト</button>
-        </div>
-      </div>
+  return `<div class="card"><div class="card-header"><div class="card-title">設定</div></div><div class="card-body">
+    <div class="settings-section">
+      <h3>👤 プロフィール変更</h3>
+      <div class="form-group"><label>お名前</label><input type="text" id="set-name" value="${currentProfile.name||''}"></div>
+      <button class="btn btn-primary btn-full" onclick="updateProfile()">名前を更新</button>
     </div>
-  `;
+    <div class="settings-section">
+      <h3>✉️ メールアドレス変更</h3>
+      <div class="form-group"><label>新しいメールアドレス</label><input type="email" id="set-email" placeholder="new@example.com"></div>
+      <button class="btn btn-primary btn-full" onclick="updateEmail()">メールを変更</button>
+      <div style="font-size:0.78rem;color:var(--text2);margin-top:6px">※確認メールが届きます</div>
+    </div>
+    <div class="settings-section">
+      <h3>🔒 パスワード変更</h3>
+      <div class="form-group"><label>新しいパスワード（6文字以上）</label><input type="password" id="set-pass" placeholder="新しいパスワード"></div>
+      <div class="form-group"><label>確認用パスワード</label><input type="password" id="set-pass2" placeholder="もう一度入力"></div>
+      <button class="btn btn-primary btn-full" onclick="updatePassword()">パスワードを変更</button>
+    </div>
+    ${currentProfile.role==='host'?`<div class="settings-section" style="border:2px solid var(--info);background:#eff6ff">
+      <h3>👁️ 従業員ビュー（管理者専用）</h3>
+      <p style="font-size:0.85rem;color:var(--text2);margin-bottom:12px">従業員目線でアプリを確認できます</p>
+      <button class="btn btn-primary btn-full" style="background:var(--info)" onclick="viewAsEmployee()">従業員ビューで見る</button>
+    </div>`:''}
+    <div class="settings-section">
+      <h3>🚪 ログアウト</h3>
+      <button class="btn btn-danger btn-full" onclick="doLogout()">ログアウト</button>
+    </div>
+  </div></div>`;
 }
 
 async function updateProfile() {
   const name = document.getElementById('set-name')?.value?.trim();
   if (!name) { toast('名前を入力してください'); return; }
   const { error } = await sb.from('profiles').update({ name }).eq('id', currentUser.id);
-  if (error) { toast('エラー: ' + error.message); return; }
+  if (error) { toast('エラー: '+error.message); return; }
   currentProfile.name = name;
   document.getElementById('topbar-name').textContent = name;
   toast('名前を更新しました');
@@ -933,9 +642,9 @@ async function updateEmail() {
   const email = document.getElementById('set-email')?.value?.trim();
   if (!email) { toast('メールアドレスを入力してください'); return; }
   const { error } = await sb.auth.updateUser({ email });
-  if (error) { toast('エラー: ' + error.message); return; }
+  if (error) { toast('エラー: '+error.message); return; }
   await sb.from('profiles').update({ email }).eq('id', currentUser.id);
-  toast('確認メールを送信しました。メールを確認してください');
+  toast('確認メールを送信しました');
 }
 
 async function updatePassword() {
@@ -945,274 +654,152 @@ async function updatePassword() {
   if (pass !== pass2) { toast('パスワードが一致しません'); return; }
   if (pass.length < 6) { toast('6文字以上入力してください'); return; }
   const { error } = await sb.auth.updateUser({ password: pass });
-  if (error) { toast('エラー: ' + error.message); return; }
+  if (error) { toast('エラー: '+error.message); return; }
   toast('パスワードを変更しました');
   document.getElementById('set-pass').value = '';
   document.getElementById('set-pass2').value = '';
 }
 
-// ==================== MODALS ====================
-function openModal(contentHtml) {
-  document.getElementById('modal-content').innerHTML = contentHtml;
-  document.getElementById('modal-overlay').classList.remove('hidden');
-}
-
-function closeModal() {
-  document.getElementById('modal-overlay').classList.add('hidden');
-}
-
-function closeModalOnOverlay(e) {
-  if (e.target === document.getElementById('modal-overlay')) closeModal();
-}
+function openModal(html) { document.getElementById('modal-content').innerHTML=html; document.getElementById('modal-overlay').classList.remove('hidden'); }
+function closeModal() { document.getElementById('modal-overlay').classList.add('hidden'); }
+function closeModalOnOverlay(e) { if(e.target===document.getElementById('modal-overlay')) closeModal(); }
 
 function openAddShiftModal() {
-  const dateVal = selectedDate || toDateStr(new Date());
-  openModal(`
-    <div class="modal-header">
-      <div class="modal-title">シフトを追加</div>
-      <button class="modal-close" onclick="closeModal()">×</button>
-    </div>
-    <div class="form-group">
-      <label>タイトル（任意）</label>
-      <input type="text" id="m-title" placeholder="例：早番、遅番">
-    </div>
-    <div class="form-group">
-      <label>日付</label>
-      <input type="date" id="m-date" value="${dateVal}">
-    </div>
-    <div class="form-group">
-      <label>開始時間</label>
-      <input type="time" id="m-start" value="09:00">
-    </div>
-    <div class="form-group">
-      <label>終了時間</label>
-      <input type="time" id="m-end" value="17:00">
-    </div>
-    <div class="form-group">
-      <label>必要人数</label>
-      <input type="number" id="m-count" value="1" min="1">
-    </div>
-    <div class="form-group">
-      <label>メモ（任意）</label>
-      <textarea id="m-memo" placeholder="備考など"></textarea>
-    </div>
-    <div style="display:flex;gap:8px">
-      <button class="btn btn-ghost" style="flex:1" onclick="closeModal()">キャンセル</button>
-      <button class="btn btn-primary" style="flex:1" onclick="saveShift()">保存</button>
-    </div>
+  const dv = selectedDate || toDateStr(new Date());
+  openModal(`<div class="modal-header"><div class="modal-title">シフトを追加</div><button class="modal-close" onclick="closeModal()">×</button></div>
+    <div class="form-group"><label>タイトル（任意）</label><input type="text" id="m-title" placeholder="例：早番、遅番"></div>
+    <div class="form-group"><label>日付</label><input type="date" id="m-date" value="${dv}"></div>
+    <div class="form-group"><label>開始時間</label><input type="time" id="m-start" value="09:00"></div>
+    <div class="form-group"><label>終了時間</label><input type="time" id="m-end" value="17:00"></div>
+    <div class="form-group"><label>必要人数</label><input type="number" id="m-count" value="1" min="1"></div>
+    <div class="form-group"><label>メモ（任意）</label><textarea id="m-note" placeholder="備考など"></textarea></div>
+    <div style="display:flex;gap:8px"><button class="btn btn-ghost" style="flex:1" onclick="closeModal()">キャンセル</button><button class="btn btn-primary" style="flex:1" onclick="saveShift()">保存</button></div>
   `);
 }
 
 async function saveShift() {
-  const title = document.getElementById('m-title')?.value?.trim() || '';
+  const title = document.getElementById('m-title')?.value?.trim()||'';
   const date = document.getElementById('m-date')?.value;
   const start_time = document.getElementById('m-start')?.value;
   const end_time = document.getElementById('m-end')?.value;
-  const required_count = parseInt(document.getElementById('m-count')?.value) || 1;
-  const memo = document.getElementById('m-memo')?.value?.trim() || '';
-  
-  if (!date || !start_time || !end_time) { toast('日付と時間を入力してください'); return; }
-  
-  const { error } = await sb.from('shifts').insert({ title, date, start_time, end_time, required_count, memo });
-  if (error) { toast('エラー: ' + error.message); return; }
-  closeModal();
-  await loadShifts();
-  renderPage();
-  toast('シフトを追加しました');
+  const needed_count = parseInt(document.getElementById('m-count')?.value)||1;
+  const note = document.getElementById('m-note')?.value?.trim()||'';
+  if (!date||!start_time||!end_time) { toast('日付と時間を入力してください'); return; }
+  const { error } = await sb.from('shifts').insert({ title, date, start_time, end_time, needed_count, note, created_by: currentUser.id });
+  if (error) { toast('エラー: '+error.message); return; }
+  closeModal(); await loadShifts(); renderPage(); toast('シフトを追加しました');
 }
 
 async function openShiftDetail(shiftId) {
-  const s = shifts.find(s => s.id === shiftId);
+  const s = shifts.find(s=>s.id===shiftId);
   if (!s) return;
-  const applied = applications.some(a => a.shift_id === shiftId && a.user_id === currentUser.id);
-  const appliedUsers = applications.filter(a => a.shift_id === shiftId);
-  const count = appliedUsers.length;
-  const isHost = currentProfile.role === 'host' && !isViewingAsEmployee;
-  const isFull = count >= (s.required_count || 1);
-  
-  let applicantsList = '';
-  if (isHost && members.length > 0) {
-    const names = appliedUsers.map(a => {
-      const m = members.find(m => m.id === a.user_id);
-      return m ? m.name || m.email : '不明';
-    }).join('、');
-    if (names) applicantsList = `<div style="font-size:0.85rem;color:var(--text2);margin-top:8px">応募者: ${names}</div>`;
+  const applied = applications.some(a=>a.shift_id===shiftId&&a.user_id===currentUser.id);
+  const appsForShift = applications.filter(a=>a.shift_id===shiftId);
+  const cnt = appsForShift.length;
+  const isHost = currentProfile.role==='host'&&!isViewingAsEmployee;
+  const full = cnt>=(s.needed_count||1);
+  let names = '';
+  if (isHost && members.length) {
+    const ns = appsForShift.map(a=>{const m=members.find(m=>m.id===a.user_id);return m?m.name||m.email:'不明';}).join('、');
+    if (ns) names = `<div style="font-size:0.85rem;color:var(--text2);margin-top:8px">応募者: ${ns}</div>`;
   }
-  
-  openModal(`
-    <div class="modal-header">
-      <div class="modal-title">シフト詳細</div>
-      <button class="modal-close" onclick="closeModal()">×</button>
-    </div>
+  openModal(`<div class="modal-header"><div class="modal-title">シフト詳細</div><button class="modal-close" onclick="closeModal()">×</button></div>
     <div style="background:var(--bg3);border-radius:8px;padding:16px;margin-bottom:16px">
-      <div style="font-size:1.1rem;font-weight:700;margin-bottom:8px">${s.title || '無題'}</div>
+      <div style="font-size:1.1rem;font-weight:700;margin-bottom:8px">${s.title||'無題'}</div>
       <div style="font-family:'DM Mono',monospace;font-size:0.95rem">${s.date} ${s.start_time}〜${s.end_time}</div>
-      <div style="font-size:0.85rem;color:var(--text2);margin-top:4px">必要人数: ${s.required_count||1}人 / 応募: ${count}人</div>
-      ${s.memo ? `<div style="font-size:0.85rem;margin-top:8px">${s.memo}</div>` : ''}
-      ${applicantsList}
+      <div style="font-size:0.85rem;color:var(--text2);margin-top:4px">必要人数: ${s.needed_count||1}人 / 応募: ${cnt}人</div>
+      ${s.note?'<div style="font-size:0.85rem;margin-top:8px">'+s.note+'</div>':''}
+      ${names}
     </div>
     <div style="display:flex;gap:8px;flex-direction:column">
-      ${isHost ? `<button class="btn btn-danger" onclick="deleteShiftFromModal('${s.id}')">🗑️ シフトを削除</button>` : `
-        ${applied 
-          ? `<button class="btn btn-ghost" onclick="cancelShiftFromModal('${s.id}')">応募を取り消す</button>`
-          : isFull
-          ? `<button class="btn btn-ghost" disabled style="opacity:0.5">満員です</button>`
-          : `<button class="btn btn-primary" onclick="applyShiftFromModal('${s.id}')">このシフトに応募する</button>`
-        }
-      `}
+      ${isHost
+        ? '<button class="btn btn-danger" onclick="deleteShiftFromModal(''+s.id+'')">🗑️ シフトを削除</button>'
+        : applied
+          ? '<button class="btn btn-ghost" onclick="cancelShiftFromModal(''+s.id+'')">応募を取り消す</button>'
+          : full
+            ? '<button class="btn btn-ghost" disabled style="opacity:0.5">満員です</button>'
+            : '<button class="btn btn-primary" onclick="applyShiftFromModal(''+s.id+'')">このシフトに応募する</button>'
+      }
       <button class="btn btn-ghost" onclick="closeModal()">閉じる</button>
     </div>
   `);
 }
 
-async function applyShiftFromModal(shiftId) {
-  const { error } = await sb.from('applications').insert({ shift_id: shiftId, user_id: currentUser.id });
-  if (error) { toast('エラー: ' + error.message); return; }
-  closeModal();
-  await loadApplications();
-  renderPage();
-  toast('応募しました');
+async function applyShiftFromModal(id) {
+  const { error } = await sb.from('applications').insert({ shift_id:id, user_id:currentUser.id });
+  if (error) { toast('エラー: '+error.message); return; }
+  closeModal(); await loadApplications(); renderPage(); toast('応募しました');
 }
 
-async function cancelShiftFromModal(shiftId) {
-  const { error } = await sb.from('applications').delete().eq('shift_id', shiftId).eq('user_id', currentUser.id);
-  if (error) { toast('エラー: ' + error.message); return; }
-  closeModal();
-  await loadApplications();
-  renderPage();
-  toast('応募を取り消しました');
+async function cancelShiftFromModal(id) {
+  const { error } = await sb.from('applications').delete().eq('shift_id',id).eq('user_id',currentUser.id);
+  if (error) { toast('エラー: '+error.message); return; }
+  closeModal(); await loadApplications(); renderPage(); toast('応募を取り消しました');
 }
 
-async function deleteShiftFromModal(shiftId) {
+async function deleteShiftFromModal(id) {
   if (!confirm('このシフトを削除しますか？')) return;
-  await sb.from('applications').delete().eq('shift_id', shiftId);
-  const { error } = await sb.from('shifts').delete().eq('id', shiftId);
-  if (error) { toast('エラー: ' + error.message); return; }
-  closeModal();
-  await loadShifts();
-  await loadApplications();
-  renderPage();
-  toast('シフトを削除しました');
+  await sb.from('applications').delete().eq('shift_id',id);
+  const { error } = await sb.from('shifts').delete().eq('id',id);
+  if (error) { toast('エラー: '+error.message); return; }
+  closeModal(); await loadShifts(); await loadApplications(); renderPage(); toast('シフトを削除しました');
 }
 
-async function toggleRole(userId, currentRole) {
-  const newRole = currentRole === 'host' ? 'employee' : 'host';
-  if (!confirm(`ロールを${newRole === 'host' ? '管理者' : '従業員'}に変更しますか？`)) return;
-  const { error } = await sb.from('profiles').update({ role: newRole }).eq('id', userId);
-  if (error) { toast('エラー: ' + error.message); return; }
-  await loadMembers();
-  renderPage();
-  toast('ロールを変更しました');
+async function toggleRole(userId, cur) {
+  const nr = cur==='host'?'employee':'host';
+  if (!confirm(`ロールを${nr==='host'?'管理者':'従業員'}に変更しますか？`)) return;
+  const { error } = await sb.from('profiles').update({ role:nr }).eq('id',userId);
+  if (error) { toast('エラー: '+error.message); return; }
+  await loadMembers(); renderPage(); toast('ロールを変更しました');
 }
 
-function viewMemberAsEmployee(memberId) {
-  // Admin can view the app as this member - just enter employee view mode
-  viewAsEmployee();
-}
-
-// ==================== LEAVE REQUEST MODAL ====================
 function openLeaveRequestModal() {
-  openModal(`
-    <div class="modal-header">
-      <div class="modal-title">休暇・有給申請</div>
-      <button class="modal-close" onclick="closeModal()">×</button>
-    </div>
-    <div class="form-group">
-      <label>申請種別</label>
-      <select id="m-leave-type">
-        <option value="有給休暇">有給休暇</option>
-        <option value="半日有給">半日有給</option>
-        <option value="育児休暇">育児休暇</option>
-        <option value="介護休暇">介護休暇</option>
-        <option value="病気休暇">病気休暇</option>
-        <option value="特別休暇">特別休暇</option>
-        <option value="その他">その他</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>開始日</label>
-      <input type="date" id="m-leave-start" value="${toDateStr(new Date())}">
-    </div>
-    <div class="form-group">
-      <label>終了日</label>
-      <input type="date" id="m-leave-end" value="${toDateStr(new Date())}">
-    </div>
-    <div class="form-group">
-      <label>申請理由</label>
-      <textarea id="m-leave-reason" placeholder="申請理由を入力してください"></textarea>
-    </div>
-    <div style="display:flex;gap:8px">
-      <button class="btn btn-ghost" style="flex:1" onclick="closeModal()">キャンセル</button>
-      <button class="btn btn-primary" style="flex:1" onclick="submitLeaveRequest()">申請する</button>
-    </div>
+  openModal(`<div class="modal-header"><div class="modal-title">休暇・有給申請</div><button class="modal-close" onclick="closeModal()">×</button></div>
+    <div class="form-group"><label>申請種別</label><select id="m-leave-type">
+      <option value="有給休暇">有給休暇</option>
+      <option value="半日有給">半日有給</option>
+      <option value="育児休暇">育児休暇</option>
+      <option value="介護休暇">介護休暇</option>
+      <option value="病気休暇">病気休暇</option>
+      <option value="特別休暇">特別休暇</option>
+      <option value="その他">その他</option>
+    </select></div>
+    <div class="form-group"><label>開始日</label><input type="date" id="m-leave-start" value="${toDateStr(new Date())}"></div>
+    <div class="form-group"><label>終了日</label><input type="date" id="m-leave-end" value="${toDateStr(new Date())}"></div>
+    <div class="form-group"><label>申請理由</label><textarea id="m-leave-reason" placeholder="申請理由を入力してください"></textarea></div>
+    <div style="display:flex;gap:8px"><button class="btn btn-ghost" style="flex:1" onclick="closeModal()">キャンセル</button><button class="btn btn-primary" style="flex:1" onclick="submitLeaveRequest()">申請する</button></div>
   `);
 }
 
 async function submitLeaveRequest() {
-  const leave_type = document.getElementById('m-leave-type')?.value;
+  const type = document.getElementById('m-leave-type')?.value;
   const start_date = document.getElementById('m-leave-start')?.value;
   const end_date = document.getElementById('m-leave-end')?.value;
   const reason = document.getElementById('m-leave-reason')?.value?.trim();
-  
-  if (!start_date || !end_date) { toast('日付を入力してください'); return; }
-  if (end_date < start_date) { toast('終了日は開始日以降にしてください'); return; }
-  
-  const { error } = await sb.from('leave_requests').insert({
-    user_id: currentUser.id,
-    leave_type,
-    start_date,
-    end_date,
-    reason,
-    status: 'pending'
-  });
-  
-  if (error) { 
-    if (error.message && error.message.includes('schema cache')) {
-      toast('⚠️ テーブルの設定が必要です。管理者にご連絡ください');
-    } else {
-      toast('エラー: ' + error.message);
-    }
-    return; 
-  }
-  closeModal();
-  await loadLeaveRequests();
-  renderPage();
-  toast('申請を送信しました');
+  if (!start_date||!end_date) { toast('日付を入力してください'); return; }
+  if (end_date<start_date) { toast('終了日は開始日以降にしてください'); return; }
+  const { error } = await sb.from('leave_requests').insert({ user_id:currentUser.id, type, start_date, end_date, reason, status:'pending' });
+  if (error) { toast('エラー: '+error.message); return; }
+  closeModal(); await loadLeaveRequests(); renderPage(); toast('申請を送信しました');
 }
 
-async function processLeave(requestId, status) {
-  const action = status === 'approved' ? '承認' : '却下';
-  if (!confirm(`この申請を${action}しますか？`)) return;
-  
-  const { error } = await sb.from('leave_requests').update({ 
-    status, 
-    processed_at: new Date().toISOString(),
-    processed_by: currentUser.id
-  }).eq('id', requestId);
-  
-  if (error) { toast('エラー: ' + error.message); return; }
-  
-  await loadLeaveRequests();
-  renderPage();
-  toast(`申請を${action}しました`);
+async function processLeave(id, status) {
+  if (!confirm(`この申請を${status==='approved'?'承認':'却下'}しますか？`)) return;
+  const { error } = await sb.from('leave_requests').update({ status }).eq('id',id);
+  if (error) { toast('エラー: '+error.message); return; }
+  await loadLeaveRequests(); renderPage(); toast(`申請を${status==='approved'?'承認':'却下'}しました`);
 }
 
-// ==================== UTILITIES ====================
 function toast(msg) {
   const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 2500);
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 2500);
 }
 
 function toDateStr(d) {
-  const y = d.getFullYear();
-  const m = String(d.getMonth()+1).padStart(2,'0');
-  const day = String(d.getDate()).padStart(2,'0');
-  return `${y}-${m}-${day}`;
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
 
-// ==================== START ====================
 init();
 </script>
 </body>
