@@ -713,7 +713,7 @@ async function openShiftDetail(shiftId) {
     </div>
     <div style="display:flex;gap:8px;flex-direction:column">
       ${isHost
-        ? '<button class="btn btn-danger" onclick="deleteShiftFromModal(''+s.id+'')">🗑️ シフトを削除</button>'
+        ? `<button class="btn btn-danger" onclick="deleteShiftFromModal('${s.id}')">🗑️ シフトを削除</button>`
         : applied
           ? '<button class="btn btn-ghost" onclick="cancelShiftFromModal(''+s.id+'')">応募を取り消す</button>'
           : full
