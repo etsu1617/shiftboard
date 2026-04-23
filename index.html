@@ -800,7 +800,15 @@ function toDateStr(d) {
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
 
-init();
+// Start app after supabase loads
+function startApp() {
+  if (typeof supabase === 'undefined' || !supabase.createClient) {
+    setTimeout(startApp, 100);
+    return;
+  }
+  init();
+}
+startApp();
 </script>
 </body>
 </html>
