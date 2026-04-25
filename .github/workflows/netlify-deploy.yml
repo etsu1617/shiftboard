@@ -1,9 +1,0 @@
-name: Deploy to Netlify
-on:
-  workflow_dispatch:
-  jobs:
-    deploy:
-        runs-on: ubuntu-latest
-            steps:
-                  - name: Trigger Netlify Build
-                          run: curl -s -X POST -H "Authorization: Bearer nfp_p7PGTahJhjoNCPDy9ivREgSWPRWoX74Lc4c9" -H "Content-Type: application/json" "https://api.netlify.com/api/v1/sites/692a0873-d8e0-486c-a58b-7629916b19b2/builds"
