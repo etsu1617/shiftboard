@@ -9,7 +9,7 @@
 <style>
 :root {
   --bg: #f5f5f3;
-  --bg2: #ffffff;
+  --bg2: #ffffff;h
   --bg3: #f0f0ed;
   --border: #e0dfd8;
   --text: #1a1a18;
@@ -794,16 +794,16 @@ function toast(msg) {
   const el = document.getElementById('toast');
   el.textContent = msg; el.classList.add('show');
   setTimeout(()=>el.classList.remove('show'), 2500);
-}
+}h
 
 function toDateStr(d) {
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
 
 // Start app after supabase loads
-function startApp() {
-  if (typeof supabase === 'undefined' || !supabase.createClient) {
-    setTimeout(startApp, 100);
+function startApp() { init(); }
+  
+    
     return;
   }
   init();
