@@ -794,7 +794,7 @@ function toast(msg) {
   const el = document.getElementById('toast');
   el.textContent = msg; el.classList.add('show');
   setTimeout(()=>el.classList.remove('show'), 2500);
-}h
+}
 
 function toDateStr(d) {
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
@@ -803,11 +803,6 @@ function toDateStr(d) {
 // Start app after supabase loads
 function startApp() { init(); }
   
-    
-    return;
-  }
-  init();
-}
 startApp();
 </script>
 </body>
